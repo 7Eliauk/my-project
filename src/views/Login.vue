@@ -10,13 +10,15 @@ const password = ref('')
 const errorMessage = ref('')
 const isLoading = ref(false)
 
-const handleLogin = async () => {
+const handleLogin = () => {
   // 简单的表单验证
   if (!username.value || !password.value) {
     errorMessage.value = '请输入用户名和密码'
     return
   }
 
+  // 注释掉原有登录逻辑，直接跳转主页
+  /*
   try {
     isLoading.value = true
     // 调用登录API
@@ -39,6 +41,10 @@ const handleLogin = async () => {
   } finally {
     isLoading.value = false
   }
+  */
+
+  // 直接跳转到主页
+  router.push('/home')
 }
 
 const goToRegister = () => {
@@ -47,31 +53,41 @@ const goToRegister = () => {
 </script>
 
 <template>
-  <div class="login-container">
-    <div class="login-card">
-      <h2>智膳坊 - 登录</h2>
-      <form @submit.prevent="handleLogin">
-        <div class="form-group">
-          <label for="username">用户名</label>
-          <input type="text" id="username" v-model="username" placeholder="请输入用户名" />
+  <div class="login-background">
+    <div class="login-container">
+      <div class="login-card">
+        <h2>智膳坊 - 登录</h2>
+        <form @submit.prevent="handleLogin">
+          <div class="form-group">
+            <label for="username">用户名</label>
+            <input type="text" id="username" v-model="username" placeholder="请输入用户名" />
+          </div>
+          <div class="form-group">
+            <label for="password">密码</label>
+            <input type="password" id="password" v-model="password" placeholder="请输入密码" />
+          </div>
+          <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+          <button type="submit" class="login-button" :disabled="isLoading">
+            {{ isLoading ? '登录中...' : '登录' }}
+          </button>
+        </form>
+        <div class="register-link">
+          还没有账号？<a href="#" @click.prevent="goToRegister">立即注册</a>
         </div>
-        <div class="form-group">
-          <label for="password">密码</label>
-          <input type="password" id="password" v-model="password" placeholder="请输入密码" />
-        </div>
-        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-        <button type="submit" class="login-button" :disabled="isLoading">
-          {{ isLoading ? '登录中...' : '登录' }}
-        </button>
-      </form>
-      <div class="register-link">
-        还没有账号？<a href="#" @click.prevent="goToRegister">立即注册</a>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.login-background {
+  background: url('../assets/1.jpg') no-repeat center center fixed;
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  background-size: cover;
+}
+
 .login-container {
   display: flex;
   justify-content: center;
@@ -80,10 +96,11 @@ const goToRegister = () => {
 }
 
 .login-card {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgb(255, 255, 255, 0.15);
   backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 40px;
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;

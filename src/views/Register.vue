@@ -60,7 +60,7 @@ const sendCode = async () => {
       }
     }, 1000)
   } catch (error: any) {
-    codeError.value = error.msg || '验证码发送失败，请稍后重试'
+    codeError.value = error.message || '验证码发送失败，请稍后重试';
   } finally {
     isLoading.value = false
   }
@@ -138,79 +138,88 @@ const goToLogin = () => {
 </script>
 
 <template>
-  <div class="register-container">
-    <div class="register-card">
-      <h2>智膳坊 - 注册</h2>
-      <form @submit.prevent="handleRegister">
-        <div class="form-group">
-          <label for="username">用户名</label>
-          <input type="text" id="username" v-model="username" placeholder="请输入用户名" />
-        </div>
-        <div class="form-group">
-          <label for="email">邮箱</label>
-          <input
-            type="email"
-            id="email"
-            v-model="email"
-            placeholder="请输入邮箱"
-            @blur="validateEmail"
-          />
-          <p v-if="emailError" class="field-error">{{ emailError }}</p>
-        </div>
-        <div class="form-group code-group">
-          <label for="register-code">注册验证码</label>
-          <div class="code-input-wrapper">
-            <input
-              type="text"
-              id="register-code"
-              v-model="registerCode"
-              placeholder="请输入注册验证码"
-              @blur="validateCode"
-            />
-            <!-- 点击获取验证码 -->
-            <span
-              class="code-link"
-              @click="sendCode"
-              :class="{ disabled: codeBtnDisabled || isLoading }"
-              :disabled="isLoading"
-            >
-              {{ isLoading ? '发送中...' : codeBtnText }}
-            </span>
+  <div class="register-background">
+    <div class="register-container">
+      <div class="register-card">
+        <h2>智膳坊 - 注册</h2>
+        <form @submit.prevent="handleRegister">
+          <div class="form-group">
+            <label for="username">用户名</label>
+            <input type="text" id="username" v-model="username" placeholder="请输入用户名" />
           </div>
-          <p v-if="codeError" class="field-error">{{ codeError }}</p>
-        </div>
-        <div class="form-group">
-          <label for="password">密码</label>
-          <input
-            type="password"
-            id="password"
-            v-model="password"
-            placeholder="请输入密码"
-            @blur="validatePasswordMatch"
-          />
-          <!-- 失去焦点时触发密码匹配校验 -->
-        </div>
-        <div class="form-group">
-          <label for="confirmPassword">确认密码</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            v-model="confirmPassword"
-            placeholder="请再次输入密码"
-            @blur="validatePasswordMatch"
-          />
-        </div>
-        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-        <button type="submit" class="register-button" :disabled="isRegistering">
-          {{ isRegistering ? '注册中...' : '注册' }}
-        </button>
-      </form>
-      <div class="login-link">已有账号？<a href="#" @click.prevent="goToLogin">立即登录</a></div>
+          <div class="form-group">
+            <label for="email">邮箱</label>
+            <input
+              type="email"
+              id="email"
+              v-model="email"
+              placeholder="请输入邮箱"
+              @blur="validateEmail"
+            />
+            <p v-if="emailError" class="field-error">{{ emailError }}</p>
+          </div>
+          <div class="form-group code-group">
+            <label for="register-code">注册验证码</label>
+            <div class="code-input-wrapper">
+              <input
+                type="text"
+                id="register-code"
+                v-model="registerCode"
+                placeholder="请输入注册验证码"
+                @blur="validateCode"
+              />
+              <!-- 点击获取验证码 -->
+              <span
+                class="code-link"
+                @click="sendCode"
+                :class="{ disabled: codeBtnDisabled || isLoading }"
+                :disabled="isLoading"
+              >
+                {{ isLoading ? '发送中...' : codeBtnText }}
+              </span>
+            </div>
+            <p v-if="codeError" class="field-error">{{ codeError }}</p>
+          </div>
+          <div class="form-group">
+            <label for="password">密码</label>
+            <input
+              type="password"
+              id="password"
+              v-model="password"
+              placeholder="请输入密码"
+              @blur="validatePasswordMatch"
+            />
+            <!-- 失去焦点时触发密码匹配校验 -->
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">确认密码</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              v-model="confirmPassword"
+              placeholder="请再次输入密码"
+              @blur="validatePasswordMatch"
+            />
+          </div>
+          <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+          <button type="submit" class="register-button" :disabled="isRegistering">
+            {{ isRegistering ? '注册中...' : '注册' }}
+          </button>
+        </form>
+        <div class="login-link">已有账号？<a href="#" @click.prevent="goToLogin">立即登录</a></div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.register-background {
+  background: url('../assets/1.jpg') no-repeat center center fixed;
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  background-size: cover;
+}
 .register-container {
   display: flex;
   justify-content: center;

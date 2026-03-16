@@ -27,3 +27,29 @@ export const login = (data: {
 export const logout = () => {
   return request.post('/api/auth/logout')
 }
+
+// 食物识别接口
+// export const recognizeDish = (image: File) => {
+//   const formData = new FormData()
+//   formData.append('image', image)
+//   return request.post('/api/dish/recognize', formData, {
+//     headers: {
+//       'Content-Type': 'multipart/form-data'
+//     }
+//   })
+// }
+export function recognizeDish(file:any){
+  //1、创建Formdata()
+  const formData=new FormData()
+  //2、把图片放进FormData
+  formData.append('file',file)
+
+  return request({
+    url:'/api/dish/recognize',
+    method:'post',
+    data:formData,
+    headers:{
+      'Content-Type':'multipart/form-data' //图片以formdata形式传过去
+    }
+  })
+}

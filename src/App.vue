@@ -13,7 +13,7 @@
 
 body {
   font-family: 'Arial', sans-serif;
-  background: url('./assets/1.jpg') no-repeat center center fixed;
+  /* background: url('./assets/1.jpg') no-repeat center center fixed; */
   background-size: cover;
   color: #333;
   min-height: 100vh;
