@@ -4,8 +4,8 @@ import {ElMessage} from 'element-plus'
 
 //创建axios实例
 const request = axios.create({
-    baseURL: 'http://1qa2098ex7204.vicp.fun',
-    timeout:10000,
+    baseURL: 'https://1qa2098ex7204.vicp.fun',
+    timeout:30000,
     //图片识别功能不用json格式
     // headers:{'Content-Type':'application/json'}
 })

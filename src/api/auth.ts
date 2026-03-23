@@ -42,14 +42,14 @@ export function recognizeDish(file:any){
   //1、创建Formdata()
   const formData=new FormData()
   //2、把图片放进FormData
-  formData.append('file',file)
+  formData.append('images',file)
 
   return request({
     url:'/api/dish/recognize',
     method:'post',
     data:formData,
-    headers:{
-      'Content-Type':'multipart/form-data' //图片以formdata形式传过去
-    }
+    // headers:{
+    //   'Content-Type':'multipart/form-data' //图片以formdata形式传过去
+    // }
   })
 }

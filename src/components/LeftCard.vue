@@ -19,9 +19,10 @@
     <el-dialog
       v-model="dialogVisible"
       title="AI 食物识别"
-      width="450px"
+      width="60%"
       @close="resetUpload"
       append-to-body
+      custom-class="food-recognize-dialog"
     >
       <!-- 图片上传组件 -->
       <el-upload
@@ -30,6 +31,7 @@
         :on-change="handleFileChange"
         list-type="picture-card"
         accept="image/*"
+        :disabled="isLoading"
       >
         <div class="upload-text">点击上传食物图片</div>
       </el-upload>
@@ -60,8 +62,10 @@
       </div>
 
       <div style="margin-top: 20px; text-align: right">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="startRecognize"> 开始识别 </el-button>
+        <el-button @click="dialogVisible = false" :disabled="isLoading">取消</el-button>
+        <el-button type="primary" @click="startRecognize" :loading="isLoading">
+          开始识别
+        </el-button>
       </div>
     </el-dialog>
   </div>
@@ -85,6 +89,8 @@ const openDialog = () => {
   dialogVisible.value = true
   recognitionResult.value = null
 }
+//加载状态
+const isLoading = ref(false)
 
 // 自动获取图片文件（第三方组件自带）
 const handleFileChange = (file) => {
@@ -100,6 +106,7 @@ const startRecognize = async () => {
   }
 
   try {
+    isLoading.value = true
     // 调用API进行食物识别
     const result = await recognizeDish(imageFile.value)
     // 返回结果给recognitionResult
@@ -107,6 +114,8 @@ const startRecognize = async () => {
   } catch (error) {
     // 错误已经在响应拦截器中处理
     console.error('识别出错：', error)
+  } finally {
+    isLoading.value = false
   }
 }
 

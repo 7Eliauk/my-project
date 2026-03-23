@@ -60,6 +60,7 @@ const sendCode = async () => {
       }
     }, 1000)
   } catch (error: any) {
+    console.error(error)
     codeError.value = error.message || '验证码发送失败，请稍后重试';
   } finally {
     isLoading.value = false
