@@ -6,6 +6,9 @@
       <button class="nav-item">建议</button>
     </div>
     <div class="nav-right">
+      <el-icon style="font-size: 24px; color: #409eff; margin: 0 10px">
+        <User />
+      </el-icon>
       <router-link to="/Personal" class="nav-per">我的</router-link>
     </div>
   </div>
@@ -13,6 +16,7 @@
 
 <script setup lang="ts">
 // 可扩展：添加社区Tab（在nav-left新增按钮即可）
+import { User } from '@element-plus/icons-vue'
 </script>
 
 <style scoped>
@@ -43,12 +47,12 @@
 }
 
 .nav-item.active {
-  color: #165DFF;
+  color: #165dff;
   font-weight: 600;
   background-color: #f0f7ff;
 }
-.nav-per{
-  color:black;
+.nav-per {
+  color: black;
   text-decoration: none;
   font-size: 18px;
 }

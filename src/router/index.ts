@@ -5,29 +5,29 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: {name:'Login'} //重定向到路由页
+      redirect: { name: 'Login' }, //重定向到路由页
     },
     {
       path: '/login',
       name: 'Login',
-      component: () => import('../views/Login.vue') //路由懒加载
+      component: () => import('../views/Login.vue'), //路由懒加载
     },
     {
       path: '/register',
       name: 'Register',
-      component: () => import('../views/Register.vue')
+      component: () => import('../views/Register.vue'),
     },
     {
-      path:'/home',
-      name:'Home',
-      component:() => import('../views/Home.vue')
+      path: '/home',
+      name: 'Home',
+      component: () => import('../views/Home.vue'),
     },
     {
-      path:'/personal',
-      name:'Personal',
-      component:() => import('../views/Personal.vue')
+      path: '/personal',
+      name: 'Personal',
+      component: () => import('../views/Personal.vue'),
     },
-  ]
+  ],
 })
 
 export default router

@@ -162,28 +162,41 @@
           <div class="nutrition-table">
             <div class="nutrition-row">
               <span class="nutrition-label">热量</span>
-              <span class="nutrition-value">{{ analysisResult?.calories || '--' }} 千卡</span>
+              <span class="nutrition-value"
+                >{{ analysisResult?.nutrition?.calorie || '--' }} 千卡</span
+              >
             </div>
             <div class="nutrition-row">
               <span class="nutrition-label">蛋白质</span>
-              <span class="nutrition-value">{{ analysisResult?.protein || '--' }} 克</span>
+              <span class="nutrition-value"
+                >{{ analysisResult?.nutrition?.protein || '--' }} 克</span
+              >
             </div>
             <div class="nutrition-row">
               <span class="nutrition-label">脂肪</span>
-              <span class="nutrition-value">{{ analysisResult?.fat || '--' }} 克</span>
+              <span class="nutrition-value">{{ analysisResult?.nutrition?.fat || '--' }} 克</span>
             </div>
             <div class="nutrition-row">
               <span class="nutrition-label">碳水化合物</span>
-              <span class="nutrition-value">{{ analysisResult?.carbohydrate || '--' }} 克</span>
+              <span class="nutrition-value"
+                >{{ analysisResult?.nutrition?.carbohydrate || '--' }} 克</span
+              >
             </div>
             <div class="nutrition-row">
               <span class="nutrition-label">膳食纤维</span>
-              <span class="nutrition-value">{{ analysisResult?.dietaryFiber || '--' }} 克</span>
+              <span class="nutrition-value">{{ analysisResult?.nutrition?.fiber || '--' }} 克</span>
             </div>
             <div class="nutrition-row">
               <span class="nutrition-label">钠</span>
-              <span class="nutrition-value">{{ analysisResult?.sodium || '--' }} 毫克</span>
+              <span class="nutrition-value"
+                >{{ analysisResult?.nutrition?.sodium || '--' }} 毫克</span
+              >
             </div>
+          </div>
+
+          <!-- 营养摘要 -->
+          <div class="nutrition-summary" v-if="analysisResult?.nutrition?.summary">
+            <p>{{ analysisResult.nutrition.summary }}</p>
           </div>
         </div>
       </div>
@@ -201,20 +214,29 @@
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import request from '../utils/request'
-import {Delete} from '@element-plus/icons-vue'
+import { Delete } from '@element-plus/icons-vue'
 //控制弹窗
 const dialogVisible = ref(false)
+// 定义营养数据类型
+interface NutritionData {
+  calorie: number | null
+  protein: number | null
+  fat: number | null
+  carbohydrate: number | null
+  fiber: number | null
+  sodium: number | null
+  description: string | null
+  baikeUrl: string | null
+  imageUrl: string | null
+  summary: string | null
+}
+
 // 定义分析结果类型
 interface AnalysisResult {
+  nutrition: NutritionData
   cookingImpact: string
   suitableGroups: string[]
   unsuitableGroups: string[]
-  calories: number
-  protein: number
-  fat: number
-  carbohydrate: number
-  dietaryFiber: number
-  sodium: number
 }
 
 //存储分析结果
@@ -230,7 +252,7 @@ const formData = ref({
     weight: number | null
   }>,
   cookingMethod: '',
-  targetGroup:[],
+  targetGroup: [],
 })
 //打开弹窗
 const openDialog = () => {
@@ -285,11 +307,11 @@ const submitForm = async () => {
 
   try {
     isSubmitting.value = true
-
+    //将数组形式的targetGroup通过.join方法转变成字符串形式
     const submitData = {
-    ingredients: formData.value.ingredients,
-    cookingMethod: formData.value.cookingMethod,
-    targetGroup: formData.value.targetGroup.join(',')
+      ingredients: formData.value.ingredients,
+      cookingMethod: formData.value.cookingMethod,
+      targetGroup: formData.value.targetGroup.join(','),
     }
     // 调用后端API进行营养分析
     const response = await request.post('/api/nutrition/structured-analysis', submitData, {
@@ -488,6 +510,21 @@ const restForm = () => {
   color: #2e7d32;
   font-weight: bold;
   font-size: 14px;
+}
+
+.nutrition-summary {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #e8f5e8;
+  border-radius: 8px;
+  border-left: 4px solid #4caf50;
+}
+
+.nutrition-summary p {
+  margin: 0;
+  color: #2e7d32;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .add-btn {

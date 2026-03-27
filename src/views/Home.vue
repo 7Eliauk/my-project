@@ -3,25 +3,24 @@
     <!-- 顶部导航 -->
     <HeaderSec />
 
-    <!-- 栅格布局：3列2行，gap间距16px -->
+    <!-- 栅格布局 -->
     <div class="home-grid">
       <!-- 轮播图：跨3列 -->
       <BannerSec class="banner-area" />
 
-      <!-- 左侧区域：今日 + AI建议（跨1列，占2行） -->
+      <!-- 左侧区域：今日 + AI建议 -->
       <LeftCard class="left-area" />
 
-      <!-- 中间区域：饮食日志（跨1列，占1行） -->
+      <!-- 中间区域：饮食日志-->
       <MiddleCard class="middle-area" />
 
-      <!-- 右侧区域：推荐方案（跨1列，占2行） -->
+      <!-- 右侧区域：推荐方案-->
       <RightCard class="right-area" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-// 无需逻辑，仅引入组件
 import HeaderSec from '@/components/HeaderSection.vue'
 import BannerSec from '@/components/BannerSection.vue'
 import LeftCard from '@/components/LeftCard.vue'

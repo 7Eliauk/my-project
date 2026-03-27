@@ -6,8 +6,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 .middle-container {
@@ -20,7 +19,9 @@
   border-radius: 20px;
   padding: 1.5rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,7 +30,7 @@
 
 .middle-container:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(53, 164, 16, 0.15);
+  box-shadow: 0 8px 16px rgba(189, 89, 89, 0.15);
 }
 
 .middle-container h3 {
