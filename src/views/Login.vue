@@ -10,36 +10,36 @@ const password = ref('')
 const errorMessage = ref('')
 const isLoading = ref(false)
 
-const handleLogin = () => {
+const handleLogin = async () => {
   // 简单的表单验证
   if (!username.value || !password.value) {
     errorMessage.value = '请输入用户名和密码'
     return
   }
 
-  //   try {
-  //     isLoading.value = true
-  //     // 调用登录API
-  //     const response = await login({
-  //       username: username.value,
-  //       password: password.value,
-  //     })
+  try {
+    isLoading.value = true
+    // 调用登录API
+    const response = await login({
+      username: username.value,
+      password: password.value,
+    })
 
-  //     // 登录成功，保存token和用户信息
-  //     localStorage.setItem('token', response.data.token)
-  //     localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo))
+    // 登录成功，保存token和用户信息
+    localStorage.setItem('token', response.data.token)
+    localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo))
 
-  //     ElMessage.success('登录成功')
+    ElMessage.success('登录成功')
 
-  //     // 登录成功后跳转到主页
-  //     router.push('/home')
-  //   } catch (error: any) {
-  //     errorMessage.value = error.msg || '登录失败，请检查用户名和密码'
-  //     ElMessage.error(errorMessage.value)
-  //   } finally {
-  //     isLoading.value = false
-  //   }
-  router.push('/home')
+    // 登录成功后跳转到主页
+    router.push('/home')
+  } catch (error: any) {
+    errorMessage.value = error.msg || '登录失败，请检查用户名和密码'
+    ElMessage.error(errorMessage.value)
+  } finally {
+    isLoading.value = false
+  }
+  // router.push('/home')
 }
 
 const goToRegister = () => {
