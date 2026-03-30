@@ -59,8 +59,8 @@
 
             <el-form-item label="性别">
               <el-radio-group v-model="userInfo.gender">
-                <el-radio value="1">男</el-radio>
-                <el-radio value="2">女</el-radio>
+                <el-radio :value="1">男</el-radio>
+                <el-radio :value="2">女</el-radio>
               </el-radio-group>
             </el-form-item>
           </div>
@@ -101,7 +101,7 @@
           </el-form-item>
 
           <el-form-item label="特殊身体状态">
-            <el-select v-model="healthInfo.specialStatus"  placeholder="请选择特殊身体状态">
+            <el-select v-model="healthInfo.specialStatus" placeholder="请选择特殊身体状态">
               <el-option label="孕期" value="pregnancy" />
               <el-option label="哺乳期" value="lactation" />
               <el-option label="术后" value="postoperative" />
@@ -139,8 +139,7 @@
           </el-form-item>
 
           <el-form-item label="目标周期">
-            <el-input v-model="goalInfo.goalPeriod" placeholder="请选择目标天数">
-            </el-input>
+            <el-input v-model="goalInfo.goalPeriod" placeholder="请选择目标天数"> </el-input>
           </el-form-item>
 
           <div class="form-actions">
@@ -165,7 +164,7 @@ import {
 import request from '../utils/request'
 
 // 从localStorage获取userId，实际项目中应该从登录状态中获取
-const userId = ref(localStorage.getItem('userId') || '1')//默认值为1，实际项目中应该从登录状态获取
+const userId = ref(localStorage.getItem('userId') || '1') //默认值为1，实际项目中应该从登录状态获取
 
 //isUserInfoSaved用来标记用户是否已保存过信息
 const isUserInfoSaved = ref(!!localStorage.getItem('isUserInfoSaved'))
@@ -176,7 +175,7 @@ const userInfo = ref({
   height: null,
   weight: null,
   birthday: '',
-  gender: '1',
+  gender: 1,
 })
 
 // 身体状况信息
@@ -191,13 +190,13 @@ const healthInfo = ref({
 // 身体目标信息
 const goalInfo = ref({
   goalType: '',
-  goalPeriod:null,
+  goalPeriod: null,
 })
 
 //页面加载时获取用户信息
 onMounted(async () => {
-  console.log("页面加载完成进入onMounted")
-  console.log("isUserInfoSaved=",isUserInfoSaved.value)
+  console.log('页面加载完成进入onMounted')
+  console.log('isUserInfoSaved=', isUserInfoSaved.value)
   if (isUserInfoSaved.value) {
     try {
       // 获取个人基础,身体状况信息，目标身体状况信息
@@ -205,12 +204,14 @@ onMounted(async () => {
         getUserInfo(userId.value),
         getUserHealthInfo(userId.value),
         getUserGoalInfo(userId.value),
-      ]);
-      console.log("接口全部成功,goleRes=",goalRes);
-      (userInfo.value = userRes.data),
+      ])
+      console.log('接口全部成功,goleRes=', userRes)
+      ;(userInfo.value = userRes.data),
         (healthInfo.value = healthRes.data),
         (goalInfo.value = goalRes.data)
-     
+
+      console.log('userInfo.value=', userInfo.value)
+
       ElMessage.success('个人信息获取成功')
     } catch (error) {
       console.error('获取用户信息失败：', error)
@@ -242,7 +243,7 @@ const handleAvatarUpload = async (uploadOptions: any) => {
 
   try {
     // 将userId和file穿给后端
-    const res = await uploadAvatarApi(userId.value, file) 
+    const res = await uploadAvatarApi(userId.value, file)
     // 使用后端返回的正式URL替换临时URL
     userInfo.value.avatar = res.data.avatarUrl || tempAvatarUrl // userInfo承接后端返回的头像，如果后端没返回，依旧使用预览的头像URL
     // 释放之前的本地地址
@@ -270,7 +271,7 @@ const saveBasicInfo = async () => {
     })
     isUserInfoSaved.value = true
     ElMessage.success('个人基础信息保存成功')
-    localStorage.setItem('isUserInfoSaved','true')
+    localStorage.setItem('isUserInfoSaved', 'true')
   } catch (error) {
     ElMessage.error('个人基础信息保存失败')
   }
@@ -284,7 +285,7 @@ const saveHealthInfo = async () => {
       data: healthInfo.value,
     })
     isUserInfoSaved.value = true
-    localStorage.setItem('isUserInfoSaved','true')
+    localStorage.setItem('isUserInfoSaved', 'true')
     ElMessage.success('身体状况信息保存成功')
   } catch (error) {
     ElMessage.error('身体状况信息保存失败')
@@ -299,7 +300,7 @@ const saveGoalInfo = async () => {
       data: goalInfo.value,
     })
     isUserInfoSaved.value = true
-    localStorage.setItem('isUserInfoSaved','true')
+    localStorage.setItem('isUserInfoSaved', 'true')
     ElMessage.success('身体目标信息保存成功')
   } catch (error) {
     ElMessage.error('身体目标信息保存失败')
