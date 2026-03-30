@@ -47,13 +47,13 @@
               />
             </el-form-item>
 
-            <el-form-item label="生日">
-              <el-date-picker
-                v-model="userInfo.birthday"
-                type="date"
-                placeholder="选择生日"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
+            <el-form-item label="年龄">
+              <el-input-number
+                v-model="userInfo.age"
+                :min="0"
+                :max="150"
+                :step="1"
+                placeholder="请输入年龄"
               />
             </el-form-item>
 
@@ -174,7 +174,7 @@ const userInfo = ref({
   nickname: '',
   height: null,
   weight: null,
-  birthday: '',
+  age: null,
   gender: 1,
 })
 
