@@ -34,7 +34,17 @@ const handleLogin = async () => {
     // 登录成功后跳转到主页
     router.push('/home')
   } catch (error: any) {
-    errorMessage.value = error.msg || '登录失败，请检查用户名和密码'
+    // 处理不同类型的错误
+    if (error.response) {
+      // 服务器返回了错误响应
+      errorMessage.value = error.response.data.msg || '登录失败，请检查用户名和密码'
+    } else if (error.msg) {
+      // 自定义错误对象
+      errorMessage.value = error.msg
+    } else {
+      // 其他类型错误
+      errorMessage.value = '登录失败，请检查用户名和密码'
+    }
     ElMessage.error(errorMessage.value)
   } finally {
     isLoading.value = false

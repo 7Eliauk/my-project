@@ -35,19 +35,19 @@ const router = createRouter({
   ],
 })
 
-// 路由守卫
-// router.beforeEach((to, from, next) => {
-//   // 不需要登录的页面
-//   const publicPages = ['/login', '/register']
-//   const authRequired = !publicPages.includes(to.path)
-//   const loggedIn = localStorage.getItem('token')
+//路由守卫
+router.beforeEach((to, from, next) => {
+  // 不需要登录的页面
+  const publicPages = ['/login', '/register']
+  const authRequired = !publicPages.includes(to.path)
+  const loggedIn = localStorage.getItem('token')
 
-//   // 如果需要登录且未登录，则重定向到登录页面
-//   if (authRequired && !loggedIn) {
-//     next('/login')
-//   } else {
-//     next()
-//   }
-// })
+  // 如果需要登录且未登录，则重定向到登录页面
+  if (authRequired && !loggedIn) {
+    next('/login')
+  } else {
+    next()
+  }
+})
 
 export default router
