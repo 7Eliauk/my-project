@@ -173,7 +173,7 @@ import {
 import request from '../utils/request'
 
 // 从localStorage获取userId，实际项目中应该从登录状态中获取
-const userId = ref(localStorage.getItem('userId') || '1') // 默认值为1，实际项目中应该从登录状态获取
+const userId = ref(localStorage.getItem('userId') || '1')//默认值为1，实际项目中应该从登录状态获取
 
 //isUserInfoSaved用来标记用户是否已保存过信息
 const isUserInfoSaved = ref(false)
@@ -241,15 +241,17 @@ const beforeUpload = (file: File) => {
 // 自定义头像上传处理
 const handleAvatarUpload = async (uploadOptions: any) => {
   const file = uploadOptions.file
-  // 添加本地临时预览，提升用户体验
+  // 浏览器生产临时地址
   const tempAvatarUrl = URL.createObjectURL(file)
+  //将图片地址改为临时本地地址不用等待后端即可显示头像
   userInfo.value.avatar = tempAvatarUrl
 
   try {
-    const res = await uploadAvatarApi(userId.value, file) // 适配新接口
+    // 将userId和file穿给后端
+    const res = await uploadAvatarApi(userId.value, file) 
     // 使用后端返回的正式URL替换临时URL
-    userInfo.value.avatar = res.data.avatarUrl || tempAvatarUrl
-    // 释放临时URL资源
+    userInfo.value.avatar = res.data.avatarUrl || tempAvatarUrl // userInfo承接后端返回的头像，如果后端没返回，依旧使用预览的头像URL
+    // 释放之前的本地地址
     URL.revokeObjectURL(tempAvatarUrl)
     ElMessage.success('头像上传成功')
     uploadOptions.onSuccess(res)

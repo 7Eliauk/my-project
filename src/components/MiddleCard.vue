@@ -1,12 +1,18 @@
 <template>
   <div class="middle-container">
     <h3>饮食日志</h3>
-    <p class="middle-tip">点击下方按钮添加今日饮食记录</p>
-    <button class="add-btn">添加记录</button>
+    <p class="middle-tip">点击下方按钮查看饮食记录</p>
+    <router-link to="/diet-logs">
+      <button class="add-btn">查看日志</button>
+    </router-link>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// 添加路由支持
+// import { useRouter } from 'vue-router'
+// 移除未使用的 router 声明，因为组件中使用了 <router-link> 进行导航
+</script>
 
 <style scoped>
 .middle-container {
@@ -19,9 +25,7 @@
   border-radius: 20px;
   padding: 1.5rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition:
-    transform 0.3s,
-    box-shadow 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;
   display: flex;
   flex-direction: column;
   align-items: center;

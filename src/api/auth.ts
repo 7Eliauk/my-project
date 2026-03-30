@@ -85,10 +85,10 @@ export function saveGoalInfo(userId: string, data: any) {
     data,
   })
 }
-
 //上传头像
 export function handleAvatarUpload(userId: string, file: any) {
-  const formData = new FormData()
+  const formData = new FormData() 
+  //要求传userId和file
   formData.append('userId', userId)
   formData.append('file', file)
   
