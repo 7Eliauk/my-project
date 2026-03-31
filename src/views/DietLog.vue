@@ -51,7 +51,7 @@
               <IceCream v-else />
             </el-icon>
             <span class="meal-type">{{record.mealTime }}</span>
-            <span class="record-date">{{ formatDate(record.date) }}</span>
+            <span class="record-date">{{ formatDate(record.logDate) }}</span>
           </div>
           <div class="record-actions">
             <el-button type="info" size="small" @click="handleViewRecord(record)">
@@ -102,7 +102,7 @@
           <el-col :span="12">
             <div class="detail-item">
               <span class="detail-label">记录日期：</span>
-              <span class="detail-value">{{ viewData.date }}</span>
+              <span class="detail-value">{{ viewData.logDate }}</span>
             </div>
           </el-col>
           <el-col :span="12">
@@ -165,8 +165,8 @@
 
         <!-- 个人备注 -->
         <el-divider content-position="left">个人备注</el-divider>
-        <div class="note-content">
-          {{ viewData.note || '暂无备注' }}
+        <div class="remark-content">
+          {{ viewData.remark || '暂无备注' }}
         </div>
       </div>
 
@@ -186,7 +186,7 @@
           <el-col :span="12">
             <el-form-item label="记录日期" prop="date">
               <el-date-picker
-                v-model="formData.date"
+                v-model="formData.logDate"
                 type="date"
                 placeholder="选择日期"
                 format="YYYY-MM-DD"
@@ -315,9 +315,9 @@
 
         <!-- 个人备注 -->
         <el-divider content-position="left">个人备注</el-divider>
-        <el-form-item label="备注" prop="note">
+        <el-form-item label="备注" prop="remark">
           <el-input
-            v-model="formData.note"
+            v-model="formData.remark"
             type="textarea"
             placeholder="请输入用餐感受、特殊需求或备注信息"
             rows="4"
@@ -361,20 +361,20 @@ interface Nutrition {
 // 定义饮食记录类型
 interface DietRecord {
   id: string
-  date: string
+  logDate: string
   mealTime: string
   ingredients: Ingredient[]
   nutrition: Nutrition
-  note: string
+  remark: string
 }
 //定义表单类型
 interface FormData {
   id: string
-  date: string
+  logDate: string
   mealTime: string
   ingredients: Ingredient[]
   nutrition: Nutrition
-  note: string
+  remark: string
 }
 
 // 初始化为空数组，从API获取数据,<DietRecord[]>为定义records为DietRecord类型数组，并初始化为空数组
@@ -394,7 +394,7 @@ const formRef = ref<typeof import('element-plus')['ElForm'] | null>(null)
 // 查看详情数据
 const viewData = ref<DietRecord>({
   id: '',
-  date: '',
+  logDate: '',
   mealTime: 'breakfast',
   ingredients: [{ name: '', quantity: 0, unit: 'g', cookingMethod: '' }],
   nutrition: {
@@ -406,7 +406,7 @@ const viewData = ref<DietRecord>({
     vitamins: '',
     minerals: '',
   },
-  note: '',
+  remark: '',
 })
 
 // 动态对话框标题
@@ -417,7 +417,7 @@ const dialogTitle = computed(() => {
 // 表单数据
 const formData = ref<FormData>({
   id: '',
-  date: new Date().toISOString().split('T')[0] as string, //获取今日日期（字符串形式）
+  logDate: new Date().toISOString().split('T')[0] as string, //获取今日日期（字符串形式）
   mealTime: 'breakfast',
   ingredients: [{ name: '', quantity: 0, unit: 'g', cookingMethod: '' }],
   nutrition: {
@@ -429,12 +429,12 @@ const formData = ref<FormData>({
     vitamins: '',
     minerals: '',
   },
-  note: '',
+  remark: '',
 })
 
 // 表单验证规则
 const formRules = ref({
-  date: [{ required: true, message: '请选择记录日期', trigger: 'change' }],
+  logDate: [{ required: true, message: '请选择记录日期', trigger: 'change' }],
   mealTime: [{ required: true, message: '请选择餐次', trigger: 'change' }],
   'nutrition.calories': [{ required: true, message: '请输入热量', trigger: 'change' }],
   'nutrition.protein': [{ required: true, message: '请输入蛋白质含量', trigger: 'change' }],
@@ -479,7 +479,7 @@ const handleAddRecord = () => {
   isEditing.value = false
   formData.value = {
     id: '',
-    date: new Date().toISOString().split('T')[0] as string,
+    logDate: new Date().toISOString().split('T')[0] as string,
     mealTime: 'breakfast',
     ingredients: [{ name: '', quantity: 0, unit: 'g', cookingMethod: '' }],
     nutrition: {
@@ -491,7 +491,7 @@ const handleAddRecord = () => {
       vitamins: '',
       minerals: '',
     },
-    note: '',
+    remark: '',
   }
   dialogVisible.value = true
 }
@@ -737,7 +737,7 @@ const fetchRecords = () => {
 }
 
 /* 详情视图样式 - 个人备注 */
-.note-content {
+.remark-content {
   padding: 15px;
   background-color: #f0f5ff;
   border: 1px solid #adc6ff;
