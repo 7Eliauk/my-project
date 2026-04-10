@@ -5,17 +5,17 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: { name: 'Login' }, //重定向到路由页
+      redirect: { name: 'Login' }, //重定向到首页
     },
     {
       path: '/login',
       name: 'Login',
-      component: () => import('../views/Login.vue'), //路由懒加载
+      component: () => import('../views/Auth.vue'), //路由懒加载
     },
     {
       path: '/register',
       name: 'Register',
-      component: () => import('../views/Register.vue'),
+      component: () => import('../views/Auth.vue'),
     },
     {
       path: '/home',
@@ -31,6 +31,11 @@ const router = createRouter({
       path:'/diet-logs',
       name:'DietLog',
       component: () => import('../views/DietLog.vue')
+    },
+    {
+      path: '/diet-assistant',
+      name: 'DietAssistant',
+      component: () => import('../views/DietAssistant.vue')
     }
   ],
 })

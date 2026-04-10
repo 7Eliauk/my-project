@@ -2,45 +2,77 @@
   <div class="right-container">
     <!-- 营养分析模块 -->
     <div class="nutrition-box">
-      <h3>营养分析</h3>
-      <el-button type="primary" size="small" @click="openDialog" class="add-btn"
-        >添加食材</el-button
-      >
+      <div class="nutrition-header">
+        <h3>营养分析</h3>
+        <div class="status-indicator"></div>
+      </div>
+      <div class="nutrition-icon-wrapper">
+        <svg class="nutrition-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor"/>
+        </svg>
+      </div>
+      <p class="nutrition-desc">智能分析食材营养成分</p>
+      <button class="add-btn-custom" @click="openDialog">
+        <span>添加食材</span>
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
     </div>
+
     <div class="advise-box">
-      <h3>推荐方案</h3>
+      <div class="advise-header">
+        <h3>推荐方案</h3>
+        <div class="meal-count">3 餐</div>
+      </div>
 
       <!-- 早餐 -->
       <div class="plan-item">
-        <div class="plan-tag">早餐</div>
+        <div class="plan-tag breakfast">早餐</div>
         <div class="plan-content">
-          <img src="@/assets/breakfast.png" alt="早餐" />
+          <div class="food-img breakfast-img">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <circle cx="12" cy="12" r="3" fill="currentColor"/>
+              <path d="M12 3v3M12 18v3M3 12h3M18 12h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
           <span>燕麦粥+鸡蛋</span>
         </div>
       </div>
 
       <!-- 午餐 -->
       <div class="plan-item">
-        <div class="plan-tag">午餐</div>
+        <div class="plan-tag lunch">午餐</div>
         <div class="plan-content">
-          <img src="@/assets/lunch.png" alt="午餐" />
+          <div class="food-img lunch-img">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C8.5 2 6 4.5 6 8v4c0 2 1 3 2 4h8c1-1 2-2 2-4V8c0-3.5-2.5-6-6-6z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <path d="M8 16v4M12 16v5M16 16v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
           <span>牛排+水果</span>
         </div>
       </div>
 
       <!-- 晚餐 -->
       <div class="plan-item">
-        <div class="plan-tag">晚餐</div>
+        <div class="plan-tag dinner">晚餐</div>
         <div class="plan-content">
-          <img src="@/assets/dinner.png" alt="晚餐" />
+          <div class="food-img dinner-img">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
           <span>清蒸鱼+蔬菜</span>
         </div>
       </div>
     </div>
 
     <!-- 食材添加弹窗 -->
-    <el-dialog v-model="dialogVisible" title="添加食材信息" width="500px" append-to-body>
-      <el-form :model="formData" label-width="100px">
+    <el-dialog v-model="dialogVisible" title="添加食材信息" width="520px" append-to-body>
+      <el-form :model="formData" label-width="90px">
         <el-form-item label="食材加重量">
           <div
             v-for="(ingredient, index) in formData.ingredients"
@@ -51,12 +83,12 @@
               <el-input
                 v-model="ingredient.name"
                 placeholder="食材名称"
-                style="width: 150px; margin-right: 10px"
+                style="width: 130px; margin-right: 8px"
               />
               <el-input
                 v-model="ingredient.weight"
-                placeholder="食材重量(g)"
-                style="width: 120px; margin-right: 10px"
+                placeholder="重量(g)"
+                style="width: 90px; margin-right: 8px"
               />
               <el-button
                 type="danger"
@@ -100,8 +132,18 @@
           开始识别
         </el-button>
       </div>
+      <!-- 识别中动画 -->
+      <div class="analyzing-animation" v-if="isSubmitting && !analysisResult">
+        <div class="analyzing-spinner">
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+        </div>
+        <p class="analyzing-text">正在智能分析中...</p>
+        <p class="analyzing-subtext">AI 正在计算营养成分</p>
+      </div>
       <!-- 营养分析结果展示 -->
-      <div class="analysis-result" v-if="showResult || analysisResult">
+      <div class="analysis-result" v-if="analysisResult">
         <h4>营养分析结果</h4>
 
         <!-- 烹饪影响 -->
@@ -344,26 +386,30 @@ const restForm = () => {
 
 <style scoped>
 .right-container {
-  background-color: #f6ffed;
-  border-radius: 8px;
+  background: linear-gradient(145deg, #f6fff6 0%, #e8f5e8 100%);
+  border: none;
+  border-radius: 24px;
   padding: 16px;
-  border: 2px solid #b7eb8f;
-  border-radius: 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   height: 100%;
+  box-shadow:
+    0 4px 20px rgba(76, 175, 80, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
 }
 
 .right-container:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(189, 89, 89, 0.15);
-}
-.right-container h3 {
-  margin: 0 0 8px 0;
-  color: #52c41a;
+  box-shadow:
+    0 12px 30px rgba(76, 175, 80, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
+/* 营养分析模块 */
 .nutrition-box {
   flex: 1;
   height: 40%;
@@ -373,86 +419,297 @@ const restForm = () => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.2s;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 15px;
-  border: 1px solid #c5cedf;
-  margin: 0 auto;
+  transition: all 0.3s ease;
+  padding: 24px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fdf8 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(76, 175, 80, 0.2);
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(76, 175, 80, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  position: relative;
+  overflow: hidden;
 }
+
 .nutrition-box:hover {
   transform: scale(1.02);
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.12),
+    0 4px 12px rgba(76, 175, 80, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
-.advise-box {
-  height: 60%;
-  width: 95%;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 15px;
-  border: 1px solid #c5cedf;
-}
-.plan-item {
+
+.nutrition-header {
+  position: absolute;
+  top: 16px;
+  right: 16px;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 0;
-  border-bottom: 1px solid #e5e7eb;
+}
+
+.nutrition-header h3 {
+  margin: 0;
+  color: #2e7d32;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  background: #81c784;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.nutrition-icon-wrapper {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  box-shadow:
+    0 4px 15px rgba(76, 175, 80, 0.2),
+    inset 0 2px 4px rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+.nutrition-box:hover .nutrition-icon-wrapper {
+  transform: scale(1.05);
+  box-shadow:
+    0 6px 20px rgba(76, 175, 80, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.8);
+}
+
+.nutrition-icon {
+  width: 36px;
+  height: 36px;
+  color: #4caf50;
+}
+
+.nutrition-desc {
+  margin: 0 0 16px 0;
+  font-size: 13px;
+  color: #78909c;
+}
+
+.add-btn-custom {
+  background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow:
+    0 4px 12px rgba(76, 175, 80, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-btn-custom:hover {
+  background: linear-gradient(135deg, #43a047 0%, #388e3c 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 16px rgba(76, 175, 80, 0.4),
+    0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* 推荐方案模块 */
+.advise-box {
+  height: 60%;
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fdf8 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(76, 175, 80, 0.2);
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(76, 175, 80, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.advise-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.advise-header h3 {
+  margin: 0;
+  color: #2e7d32;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.advise-header h3::before {
+  content: '🍽️';
+  font-size: 16px;
+}
+
+.meal-count {
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+  color: #4caf50;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.1);
+}
+
+.plan-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px dashed rgba(76, 175, 80, 0.15);
+  transition: all 0.3s ease;
+}
+
+.plan-item:last-child {
+  border-bottom: none;
+}
+
+.plan-item:hover {
+  background: rgba(76, 175, 80, 0.03);
+  border-radius: 8px;
+  padding: 12px 8px;
+  margin: 0 -8px;
 }
 
 .plan-tag {
-  background-color: #fff;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 6px 12px;
+  border-radius: 10px;
   font-size: 12px;
-  color: #333;
-  border: 1px solid #e5e7eb;
+  font-weight: 600;
+  min-width: 50px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.plan-tag.breakfast {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  color: #f57c00;
+}
+
+.plan-tag.lunch {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  color: #1976d2;
+}
+
+.plan-tag.dinner {
+  background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+  color: #7b1fa2;
 }
 
 .plan-content {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   flex: 1;
 }
 
-.plan-content img {
-  width: 32px;
-  height: 32px;
-  border-radius: 4px;
+.food-img {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.food-img svg {
+  width: 24px;
+  height: 24px;
+}
+
+.food-img.breakfast-img {
+  background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+  color: #ffa000;
+}
+
+.food-img.lunch-img {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  color: #388e3c;
+}
+
+.food-img.dinner-img {
+  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+  color: #c2185b;
+}
+
+.plan-item:hover .food-img {
+  transform: scale(1.1);
+}
+
+.plan-content span {
+  color: #37474f;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 /* 营养分析结果样式 */
 .analysis-result {
   margin-top: 20px;
-  padding: 15px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f9f9f9 0%, #f5f5f5 100%);
+  border-radius: 16px;
   border: 1px solid #e0e0e0;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
 }
 
 .analysis-result h4 {
-  margin: 0 0 15px 0;
+  margin: 0 0 16px 0;
   color: #2e7d32;
   font-size: 18px;
+  font-weight: 600;
   border-bottom: 2px solid #c8e6c9;
-  padding-bottom: 8px;
+  padding-bottom: 10px;
 }
 
 .result-section {
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
 .result-section h5 {
-  margin: 0 0 8px 0;
+  margin: 0 0 10px 0;
   color: #555;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .result-section p {
   margin: 0;
   color: #666;
-  line-height: 1.5;
+  line-height: 1.6;
+  font-size: 13px;
 }
 
 .group-list {
@@ -462,22 +719,23 @@ const restForm = () => {
 }
 
 .group-tag {
-  padding: 4px 12px;
-  border-radius: 15px;
+  padding: 6px 14px;
+  border-radius: 16px;
   font-size: 12px;
   font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 .group-tag.suitable {
-  background-color: #e8f5e8;
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
   color: #2e7d32;
-  border: 1px solid #c8e6c9;
+  border: 1px solid #a5d6a7;
 }
 
 .group-tag.unsuitable {
-  background-color: #ffebee;
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
   color: #c62828;
-  border: 1px solid #ffcdd2;
+  border: 1px solid #ef9a9a;
 }
 
 .placeholder {
@@ -495,28 +753,35 @@ const restForm = () => {
 .nutrition-row {
   display: flex;
   justify-content: space-between;
-  padding: 8px 12px;
-  background-color: white;
-  border-radius: 6px;
+  padding: 10px 14px;
+  background: white;
+  border-radius: 10px;
   border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.nutrition-row:hover {
+  border-color: #c8e6c9;
+  box-shadow: 0 3px 6px rgba(76, 175, 80, 0.1);
 }
 
 .nutrition-label {
-  color: #555;
-  font-size: 14px;
+  color: #546e7a;
+  font-size: 13px;
 }
 
 .nutrition-value {
   color: #2e7d32;
-  font-weight: bold;
-  font-size: 14px;
+  font-weight: 600;
+  font-size: 13px;
 }
 
 .nutrition-summary {
-  margin-top: 15px;
-  padding: 12px;
-  background-color: #e8f5e8;
-  border-radius: 8px;
+  margin-top: 16px;
+  padding: 14px;
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+  border-radius: 12px;
   border-left: 4px solid #4caf50;
 }
 
@@ -525,42 +790,239 @@ const restForm = () => {
   color: #2e7d32;
   font-size: 14px;
   font-weight: 500;
-}
-
-.add-btn {
-  margin-top: 8px;
-  padding: 6px 16px;
-  font-size: 12px;
+  line-height: 1.5;
 }
 
 /* 弹窗样式优化 */
+:deep(.el-dialog) {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
 :deep(.el-dialog__header) {
-  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
-  border-bottom: 2px solid #4caf50;
+  background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
+  padding: 20px 24px;
+  margin: 0;
 }
 
 :deep(.el-dialog__title) {
-  color: #2e7d32;
-  font-weight: bold;
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+}
+
+:deep(.el-dialog__headerbtn) {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+:deep(.el-dialog__headerbtn .el-dialog__close) {
+  color: white;
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+:deep(.el-dialog__headerbtn:hover .el-dialog__close) {
+  color: white;
+  transform: rotate(90deg);
+}
+
+:deep(.el-dialog__body) {
+  padding: 24px;
+  background: linear-gradient(180deg, #fafafa 0%, #f5f5f5 100%);
+}
+
+:deep(.el-form-item) {
+  margin-bottom: 20px;
 }
 
 :deep(.el-form-item__label) {
-  color: #555;
-  font-weight: 500;
+  color: #37474f;
+  font-weight: 600;
+  font-size: 14px;
+  padding-right: 16px;
 }
 
 :deep(.el-input__wrapper),
 :deep(.el-select__wrapper) {
-  border-radius: 6px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
 }
 
+:deep(.el-input__wrapper:hover),
+:deep(.el-select__wrapper:hover) {
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+}
+
+:deep(.el-input__wrapper.is-focus),
+:deep(.el-select__wrapper.is-focus) {
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+/* 食材列表样式 */
+.ingredient-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.ingredient-row:hover {
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.1);
+  transform: translateX(4px);
+}
+
+/* 按钮样式 */
 :deep(.el-button--primary) {
-  background-color: #4caf50;
-  border-color: #4caf50;
+  background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  transition: all 0.3s ease;
 }
 
 :deep(.el-button--primary:hover) {
-  background-color: #2e7d32;
-  border-color: #2e7d32;
+  background: linear-gradient(135deg, #43a047 0%, #388e3c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+}
+
+:deep(.el-button--danger) {
+  background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
+  border: none;
+  box-shadow: 0 2px 8px rgba(239, 83, 80, 0.3);
+}
+
+:deep(.el-button--danger:hover) {
+  background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
+  box-shadow: 0 4px 12px rgba(239, 83, 80, 0.4);
+}
+
+:deep(.el-button--success) {
+  background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
+  border: none;
+  border-radius: 12px;
+  padding: 12px 32px;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.35);
+  transition: all 0.3s ease;
+}
+
+:deep(.el-button--success:hover) {
+  background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.45);
+}
+
+/* 底部按钮区域 */
+:deep(.el-dialog__footer) {
+  padding: 16px 24px;
+  background: white;
+  border-top: 1px solid #e0e0e0;
+}
+
+:deep(.dialog-footer .el-button) {
+  border-radius: 10px;
+  padding: 10px 24px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+:deep(.dialog-footer .el-button:first-child) {
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  color: #555;
+}
+
+:deep(.dialog-footer .el-button:first-child:hover) {
+  background: #eeeeee;
+  border-color: #bdbdbd;
+}
+
+/* 识别中动画样式 */
+.analyzing-animation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #f8fdf8 0%, #e8f5e8 100%);
+  border-radius: 16px;
+  margin-top: 20px;
+  border: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+.analyzing-spinner {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 20px;
+}
+
+.spinner-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #4caf50;
+  border-right-color: #81c784;
+}
+
+.spinner-ring:nth-child(1) {
+  width: 80px;
+  height: 80px;
+  animation: spin 1.5s linear infinite;
+}
+
+.spinner-ring:nth-child(2) {
+  width: 60px;
+  height: 60px;
+  animation: spin 1.2s linear infinite reverse;
+  border-top-color: #66bb6a;
+  border-right-color: #a5d6a7;
+}
+
+.spinner-ring:nth-child(3) {
+  width: 40px;
+  height: 40px;
+  animation: spin 0.9s linear infinite;
+  border-top-color: #43a047;
+  border-right-color: #4caf50;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.analyzing-text {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2e7d32;
+  letter-spacing: 0.5px;
+}
+
+.analyzing-subtext {
+  margin: 0;
+  font-size: 13px;
+  color: #78909c;
 }
 </style>

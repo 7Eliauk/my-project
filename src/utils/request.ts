@@ -25,9 +25,19 @@ request.interceptors.request.use(
 //响应拦截器
 request.interceptors.response.use(
   (response) => {
+    // 对于流式响应，直接返回完整的响应对象
+    if (response.config.responseType === 'stream') {
+      return response
+    }
+    
     const res = response.data
-    //非200错误提示操作失败
-    if (res.code !== 200) {
+    // 检查是否是带有 data: 前缀的文本响应
+    if (typeof res === 'string' && res.includes('data:')) {
+      // 直接返回原始响应，由调用方处理
+      return res
+    }
+    // 对于 JSON 响应，检查 code 字段
+    if (typeof res === 'object' && res.code !== 200) {
       ElMessage.error(res.msg || '操作失败')
       return Promise.reject(res)
     }

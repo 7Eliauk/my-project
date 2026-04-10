@@ -309,121 +309,328 @@ const saveGoalInfo = async () => {
 </script>
 
 <style scoped>
+/* 页面整体样式 */
 .personal-container {
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 20px;
-  background-color: #f5f7fa;
+  padding: 30px 20px;
+  background: linear-gradient(135deg, #f8fdf8 0%, #e8f5e8 100%);
   min-height: 100vh;
-}
-
-.page-title {
-  text-align: center;
-  color: #2e7d32;
-  margin-bottom: 30px;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.personal-section {
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 24px;
+  position: relative;
   overflow: hidden;
 }
 
-.section-title {
-  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+/* 装饰元素 */
+.personal-container::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), transparent);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.personal-container::after {
+  content: '';
+  position: absolute;
+  bottom: -50px;
+  left: -50px;
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), transparent);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+/* 页面标题 */
+.page-title {
+  text-align: center;
   color: #2e7d32;
-  padding: 16px 24px;
+  margin-bottom: 40px;
+  font-size: 32px;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 4px rgba(76, 175, 80, 0.1);
+}
+
+.page-title::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(135deg, #4caf50, #81c784);
+  border-radius: 2px;
+  margin: 12px auto 0;
+}
+
+/* 卡片样式 */
+.personal-section {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(76, 175, 80, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  margin-bottom: 30px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.personal-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.1),
+    0 4px 12px rgba(76, 175, 80, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* 卡片标题 */
+.section-title {
+  background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
+  color: white;
+  padding: 20px 24px;
   margin: 0;
   font-size: 18px;
-  font-weight: bold;
-  border-bottom: 2px solid #4caf50;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
+.section-title::before {
+  content: '🍃';
+  font-size: 20px;
+}
+
+/* 卡片内容 */
 .section-content {
-  padding: 24px;
+  padding: 30px;
 }
 
+/* 信息行 */
 .info-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 30px;
+  margin-bottom: 30px;
+  align-items: flex-start;
 }
 
 .info-row :deep(.el-form-item) {
   margin-bottom: 0;
+  flex: 1;
+  min-width: 200px;
 }
 
-/* 头像样式 */
+/* 头像上传 */
 .avatar-uploader {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
 }
 
 .avatar {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #4caf50;
+  border: 4px solid #4caf50;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+  transition: all 0.3s ease;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.3);
 }
 
 .avatar-uploader-icon {
-  width: 100px;
-  height: 100px;
-  background-color: #f0f0f0;
-  border: 2px dashed #4caf50;
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #f8fdf8 0%, #e8f5e8 100%);
+  border: 3px dashed #4caf50;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
+  font-size: 36px;
   color: #4caf50;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-uploader-icon::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(135deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+  transform: rotate(45deg);
+  transition: all 0.6s ease;
+  opacity: 0;
 }
 
 .avatar-uploader-icon:hover {
-  background-color: #e8f5e8;
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
   border-color: #2e7d32;
   transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.2);
+}
+
+.avatar-uploader-icon:hover::before {
+  opacity: 1;
+  transform: rotate(45deg) translate(50%, 50%);
 }
 
 /* 表单样式 */
 :deep(.el-form-item__label) {
-  font-weight: bold;
-  color: #555;
+  font-weight: 600;
+  color: #37474f;
+  font-size: 14px;
+  padding-right: 16px;
 }
 
 :deep(.el-input__wrapper),
 :deep(.el-select__wrapper),
 :deep(.el-input-number) {
-  border-radius: 8px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
 }
 
-:deep(.el-button--primary) {
+:deep(.el-input__wrapper:hover),
+:deep(.el-select__wrapper:hover),
+:deep(.el-input-number:hover) {
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+  border-color: #c8e6c9;
+}
+
+:deep(.el-input__wrapper.is-focus),
+:deep(.el-select__wrapper.is-focus),
+:deep(.el-input-number.is-focus) {
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+  border-color: #4caf50;
+}
+
+/* 单选框样式 */
+:deep(.el-radio__input.is-checked .el-radio__inner) {
   background-color: #4caf50;
   border-color: #4caf50;
-  border-radius: 8px;
-  padding: 8px 24px;
-  font-size: 14px;
-  font-weight: bold;
+}
+
+:deep(.el-radio__input.is-checked + .el-radio__label) {
+  color: #4caf50;
+  font-weight: 500;
+}
+
+/* 开关样式 */
+:deep(.el-switch.is-checked .el-switch__core) {
+  background-color: #4caf50;
+}
+
+:deep(.el-switch__core) {
+  border-radius: 20px;
+}
+
+/* 按钮样式 */
+:deep(.el-button--primary) {
+  background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
+  border: none;
+  border-radius: 12px;
+  padding: 10px 32px;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
 }
 
 :deep(.el-button--primary:hover) {
-  background-color: #2e7d32;
-  border-color: #2e7d32;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
+  background: linear-gradient(135deg, #43a047 0%, #388e3c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
 }
 
+:deep(.el-button--primary:active) {
+  transform: translateY(0);
+}
+
+/* 按钮区域 */
 .form-actions {
   text-align: right;
-  margin-top: 20px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(76, 175, 80, 0.1);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .personal-container {
+    padding: 20px 16px;
+  }
+  
+  .page-title {
+    font-size: 24px;
+  }
+  
+  .section-content {
+    padding: 20px;
+  }
+  
+  .info-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .info-row :deep(.el-form-item) {
+    min-width: 100%;
+  }
+  
+  .avatar-uploader {
+    align-self: flex-start;
+  }
+}
+
+/* 加载动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.personal-section {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.personal-section:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.personal-section:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.personal-section:nth-child(4) {
+  animation-delay: 0.3s;
 }
 </style>
 

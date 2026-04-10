@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500">
+  <defs>
+    <linearGradient id="warmBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff5e6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffd9b3;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="plateGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5f5f5;stop-opacity:1" />
+    </linearGradient>
+    
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  
+  <!-- 背景装饰 -->
+  <circle cx="300" cy="250" r="200" fill="url(#warmBg)" opacity="0.6"/>
+  <circle cx="120" cy="120" r="60" fill="#ffe0b2" opacity="0.5"/>
+  <circle cx="500" cy="400" r="80" fill="#ffcc80" opacity="0.4"/>
+  
+  <!-- 装饰叶子 -->
+  <g transform="translate(80, 180)">
+    <ellipse cx="0" cy="0" rx="15" ry="25" fill="#66bb6a" transform="rotate(-30)"/>
+    <ellipse cx="15" cy="5" rx="12" ry="20" fill="#81c784" transform="rotate(20)"/>
+  </g>
+  
+  <g transform="translate(520, 150)">
+    <ellipse cx="0" cy="0" rx="12" ry="20" fill="#4caf50" transform="rotate(40)"/>
+    <ellipse cx="-10" cy="8" rx="10" ry="16" fill="#66bb6a" transform="rotate(15)"/>
+  </g>
+  
+  <!-- 餐盘组 -->
+  <g transform="translate(300, 260)" filter="url(#shadow)">
+    <!-- 外盘 -->
+    <ellipse cx="0" cy="25" rx="150" ry="55" fill="#e0e0e0"/>
+    <ellipse cx="0" cy="20" rx="150" ry="55" fill="url(#plateGrad)"/>
+    <!-- 内盘 -->
+    <ellipse cx="0" cy="18" rx="120" ry="42" fill="#fafafa" stroke="#e8e8e8" stroke-width="2"/>
+    
+    <!-- 食物们 -->
+    <!-- 西兰花 -->
+    <g transform="translate(-55, -25)">
+      <circle cx="0" cy="0" r="16" fill="#558b2f"/>
+      <circle cx="-10" cy="6" r="12" fill="#689f38"/>
+      <circle cx="10" cy="6" r="12" fill="#7cb342"/>
+      <circle cx="0" cy="12" r="10" fill="#8bc34a"/>
+      <path d="M-4,15 L-2,32 L2,32 L4,15" fill="#aed581" stroke="#9ccc65" stroke-width="1"/>
+    </g>
+    
+    <!-- 胡萝卜 -->
+    <g transform="translate(45, -15) rotate(20)">
+      <path d="M0,0 Q12,2 18,18 Q14,34 0,38 Q-14,34 -18,18 Q-12,2 0,0" fill="#ff9800"/>
+      <path d="M0,0 Q12,2 18,18 Q14,34 0,38 Q-14,34 -18,18 Q-12,2 0,0" fill="#ff9800"/>
+      <line x1="-8" y1="12" x2="8" y2="14" stroke="#f57c00" stroke-width="1.5" opacity="0.5"/>
+      <line x1="-6" y1="22" x2="6" y2="24" stroke="#f57c00" stroke-width="1.5" opacity="0.5"/>
+      <path d="M0,-2 L-6,-12 M0,-2 L0,-14 M0,-2 L6,-12" stroke="#4caf50" stroke-width="2.5" stroke-linecap="round"/>
+    </g>
+    
+    <!-- 番茄 -->
+    <g transform="translate(0, -5)">
+      <circle cx="0" cy="0" r="20" fill="#f44336"/>
+      <circle cx="-6" cy="-6" r="5" fill="#ff5252" opacity="0.6"/>
+      <path d="M0,-18 L-3,-22 M0,-18 L3,-22 M0,-18 L0,-24" stroke="#4caf50" stroke-width="2"/>
+      <path d="M-6,-16 L0,-19 L6,-16 L4,-14 L0,-15.5 L-4,-14 Z" fill="#66bb6a"/>
+    </g>
+    
+    <!-- 玉米 -->
+    <g transform="translate(-25, 12)">
+      <ellipse cx="0" cy="0" rx="13" ry="22" fill="#ffeb3b"/>
+      <ellipse cx="0" cy="0" rx="10" ry="19" fill="#fdd835"/>
+      <line x1="-7" y1="-12" x2="7" y2="-12" stroke="#fbc02d" stroke-width="1"/>
+      <line x1="-8" y1="-4" x2="8" y2="-4" stroke="#fbc02d" stroke-width="1"/>
+      <line x1="-8" y1="4" x2="8" y2="4" stroke="#fbc02d" stroke-width="1"/>
+      <line x1="-7" y1="12" x2="7" y2="12" stroke="#fbc02d" stroke-width="1"/>
+    </g>
+    
+    <!-- 蘑菇 -->
+    <g transform="translate(30, 18)">
+      <path d="M-14,0 Q0,-18 14,0" fill="#8d6e63"/>
+      <rect x="-6" y="0" width="12" height="14" fill="#d7ccc8" rx="3"/>
+      <circle cx="-5" cy="-6" r="2.5" fill="#efebe9"/>
+      <circle cx="5" cy="-4" r="2" fill="#efebe9"/>
+    </g>
+  </g>
+  
+  <!-- 餐具 - 叉子 -->
+  <g transform="translate(420, 180) rotate(25)" filter="url(#shadow)">
+    <rect x="8" y="35" width="8" height="70" fill="#9e9e9e" rx="3"/>
+    <path d="M4,35 L4,12 Q4,2 12,2 Q20,2 20,12 L20,35" fill="none" stroke="#bdbdbd" stroke-width="4"/>
+    <line x1="8" y1="12" x2="8" y2="4" stroke="#bdbdbd" stroke-width="2.5"/>
+    <line x1="12" y1="12" x2="12" y2="4" stroke="#bdbdbd" stroke-width="2.5"/>
+    <line x1="16" y1="12" x2="16" y2="4" stroke="#bdbdbd" stroke-width="2.5"/>
+  </g>
+  
+  <!-- 餐具 - 刀子 -->
+  <g transform="translate(165, 185) rotate(-25)" filter="url(#shadow)">
+    <rect x="8" y="40" width="8" height="65" fill="#9e9e9e" rx="3"/>
+    <path d="M4,40 L4,12 Q4,2 12,2 L18,2 Q22,2 22,12 L22,40 Z" fill="#bdbdbd"/>
+  </g>
+  
+  <!-- 小装饰食材 -->
+  <!-- 柠檬 -->
+  <g transform="translate(500, 280)" filter="url(#shadow)">
+    <ellipse cx="0" cy="0" rx="18" ry="14" fill="#fdd835"/>
+    <ellipse cx="0" cy="0" rx="12" ry="9" fill="#ffeb3b"/>
+  </g>
+  
+  <!-- 樱桃 -->
+  <g transform="translate(100, 380)" filter="url(#shadow)">
+    <path d="M10,0 Q15,-15 20,-20" stroke="#4caf50" stroke-width="2" fill="none"/>
+    <path d="M20,0 Q25,-15 30,-20" stroke="#4caf50" stroke-width="2" fill="none"/>
+    <circle cx="10" cy="5" r="10" fill="#c62828"/>
+    <circle cx="20" cy="5" r="10" fill="#d32f2f"/>
+    <circle cx="7" cy="2" r="3" fill="#ef5350" opacity="0.6"/>
+    <circle cx="17" cy="2" r="3" fill="#e57373" opacity="0.6"/>
+  </g>
+  
+  <!-- 草莓 -->
+  <g transform="translate(480, 360)" filter="url(#shadow)">
+    <path d="M0,-12 Q-15,0 0,15 Q15,0 0,-12" fill="#e53935"/>
+    <ellipse cx="-5" cy="-10" rx="3" ry="2" fill="#4caf50"/>
+    <ellipse cx="5" cy="-8" rx="3" ry="2" fill="#4caf50"/>
+    <ellipse cx="0" cy="-6" rx="2" ry="2" fill="#4caf50"/>
+    <circle cx="-3" cy="3" r="1" fill="#ffeb3b"/>
+    <circle cx="3" cy="5" r="1" fill="#ffeb3b"/>
+    <circle cx="0" cy="0" r="1" fill="#ffeb3b"/>
+  </g>
+  
+  <!-- 文字 -->
+  <text x="300" y="440" text-anchor="middle" font-family="'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="24" fill="#e65100" font-weight="bold">智膳懂饮食，健康更简单</text>
+</svg>

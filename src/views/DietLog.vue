@@ -495,6 +495,7 @@ const handleAddRecord = () => {
 // 编辑记录
 const handleEditRecord = (record: any) => {
   isEditing.value = true
+  //深拷贝，表单和列表数据互不干扰
   formData.value = JSON.parse(JSON.stringify(record) || '{}')
   dialogVisible.value = true
 }
@@ -508,6 +509,7 @@ const handleDeleteRecord = (id: number) => {
   })
     .then(async () => {
       await deleteMealLog(id)
+      //过滤掉filter()内为false的
       records.value = records.value.filter((record) => record.id !== id)
       ElMessage.success('删除成功')
     })
@@ -559,6 +561,7 @@ const handleSaveRecord = async () => {
     }
     if (isEditing.value) {
       await updateMealLog(formData.value.id, fullRecord)
+      //findIndex,在数组里找符合条件的，找到返回索引号，未找到返回-1
       const index = records.value.findIndex((record) => record.id === formData.value.id)
       if (index !== -1) {
         records.value[index] = fullRecord
