@@ -29,15 +29,17 @@
     </div>
 
     <div class="nav-right">
-      <div class="user-info">
-        <div class="user-avatar">
-          <el-icon style="font-size: 20px; color: #fff">
-            <User />
-          </el-icon>
-        </div>
-        <router-link to="/Personal" class="nav-per">我的</router-link>
-      </div>
+  <!-- 把 router-link 包裹住 整个头像 + 文字 -->
+  <router-link to="/Personal" class="user-info">
+    <div class="user-avatar">
+      <el-icon style="font-size: 20px; color: #fff">
+        <User />
+      </el-icon>
     </div>
+    <span class="nav-per">我的</span>
+  </router-link>
+</div>
+
   </div>
 </template>
 
@@ -206,6 +208,7 @@ import { User } from '@element-plus/icons-vue'
   background: linear-gradient(135deg, #f5f5f5 0%, #eeeeee 100%);
   border-radius: 20px;
   transition: all 0.3s ease;
+  text-decoration: none !important;
 }
 
 .user-info:hover {

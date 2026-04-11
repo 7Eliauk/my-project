@@ -2,42 +2,65 @@
   <div class="diet-assistant-container">
     <!-- 顶部导航 -->
     <HeaderSec />
-    
+
     <!-- 主内容区 -->
     <div class="chat-container">
       <!-- 聊天头部 -->
       <div class="chat-header">
         <div class="chat-header-content">
           <div class="assistant-avatar">
-            <svg class="avatar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="currentColor" stroke-width="2" fill="none"/>
+            <svg
+              class="avatar-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"
+                stroke="currentColor"
+                stroke-width="2"
+                fill="none"
+              />
             </svg>
           </div>
           <div class="chat-header-info">
             <h2 class="chat-title">膳食助手</h2>
-            <p class="chat-subtitle">您的AI营养师，随时为您解答饮食健康问题</p>
+            <p class="chat-subtitle">您的AI营养师,随时为您解答饮食健康问题</p>
           </div>
         </div>
       </div>
-      
+
       <!-- 聊天内容区 -->
       <div class="chat-body" ref="chatBody">
         <el-scrollbar>
           <div class="message-list">
-            <div 
-              v-for="(message, index) in messages" 
+            <div
+              v-for="(message, index) in messages"
               :key="index"
               :class="['message', message.type]"
             >
               <div v-if="message.type === 'assistant'" class="message-avatar">
                 <el-avatar :size="36" class="assistant-avatar-small">
-                  <svg class="avatar-icon small" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="currentColor" stroke-width="2" fill="none"/>
+                  <svg
+                    class="avatar-icon small"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      fill="none"
+                    />
                   </svg>
                 </el-avatar>
               </div>
-              <el-card 
-                :class="['message-content', message.type === 'user' ? 'user-message' : 'assistant-message']"
+              <el-card
+                :class="[
+                  'message-content',
+                  message.type === 'user' ? 'user-message' : 'assistant-message',
+                ]"
                 :body-style="{ padding: '16px 20px' }"
               >
                 {{ message.content }}
@@ -52,7 +75,17 @@
               <el-skeleton :rows="1" animated>
                 <template #template>
                   <div class="loading-content">
-                    <el-icon class="is-loading"><svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M512 0a512 512 0 1 0 512 512A512 512 0 0 0 512 0zm0 960a448 448 0 1 1 448-448 448 448 0 0 1-448 448z" fill="currentColor"/><path d="M512 160a352 352 0 0 1 352 352c0 19.2-15.5 34.7-34.7 34.7H477.3A34.7 34.7 0 0 1 442.7 512c0-192 154-346 346-346z" fill="currentColor"/></svg></el-icon>
+                    <el-icon class="is-loading"
+                      ><svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M512 0a512 512 0 1 0 512 512A512 512 0 0 0 512 0zm0 960a448 448 0 1 1 448-448 448 448 0 0 1-448 448z"
+                          fill="currentColor"
+                        />
+                        <path
+                          d="M512 160a352 352 0 0 1 352 352c0 19.2-15.5 34.7-34.7 34.7H477.3A34.7 34.7 0 0 1 442.7 512c0-192 154-346 346-346z"
+                          fill="currentColor"
+                        /></svg
+                    ></el-icon>
                     <span>正在思考...</span>
                   </div>
                 </template>
@@ -61,7 +94,7 @@
           </div>
         </el-scrollbar>
       </div>
-      
+
       <!-- 输入区域 -->
       <div class="chat-input-area">
         <el-card :body-style="{ padding: '20px' }" class="input-card">
@@ -76,12 +109,12 @@
             class="chat-textarea"
           >
             <template #append>
-              <el-button 
-                type="primary" 
+              <el-button
+                type="primary"
                 @click="sendMessage"
                 :disabled="isLoading || !userInput.trim()"
                 class="send-button"
-                :icon="Send"
+                :icon="ArrowRight"
               >
                 发送
               </el-button>
@@ -97,109 +130,109 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue';
-import HeaderSec from '@/components/HeaderSection.vue';
-import { User } from '@element-plus/icons-vue';
-import { dietChat } from '@/api/dietChat';
+import { ref, onMounted, nextTick } from 'vue'
+import HeaderSec from '@/components/HeaderSection.vue'
+import { User, ArrowRight } from '@element-plus/icons-vue'
+import { dietChat } from '@/api/dietChat'
 
 interface Message {
-  type: 'user' | 'assistant';
-  content: string;
+  type: 'user' | 'assistant'
+  content: string
 }
 
 const messages = ref<Message[]>([
   {
     type: 'assistant',
-    content: '您好！我是您的AI营养师，有什么饮食健康问题可以咨询我？'
-  }
-]);
-const userInput = ref('');
-const isLoading = ref(false);
-const chatBody = ref<HTMLElement | null>(null);
+    content: '您好!我是您的AI营养师,有什么饮食健康问题可以咨询我？',
+  },
+])
+const userInput = ref('')
+const isLoading = ref(false)
+const chatBody = ref<HTMLElement | null>(null)
 
 // 对话历史记录（最多保存10轮对话）
 const getConversationHistory = (): { role: 'user' | 'assistant'; content: string }[] => {
   // 转换messages为后端需要的格式
-  return messages.value.map(msg => ({
+  return messages.value.map((msg) => ({
     role: msg.type,
-    content: msg.content
-  }));
-};
+    content: msg.content,
+  }))
+}
 
 // 限制对话历史为最近10轮（20条消息，每条消息算一轮的一半）
 const limitConversationHistory = (history: { role: 'user' | 'assistant'; content: string }[]) => {
   // 确保对话历史是偶数条（用户和助手各一条）
-  const maxLength = 20; // 10轮对话
+  const maxLength = 20 // 10轮对话
   if (history.length > maxLength) {
     // 保留最近的10轮对话
-    return history.slice(-maxLength);
+    return history.slice(-maxLength) // slice返回新数组，如果参数为负数，从数组末尾开始截取
   }
-  return history;
-};
+  return history
+}
 
 const scrollToBottom = async () => {
-  await nextTick();
+  await nextTick()
   if (chatBody.value) {
-    chatBody.value.scrollTop = chatBody.value.scrollHeight;
+    chatBody.value.scrollTop = chatBody.value.scrollHeight
   }
-};
+}
 
 const sendMessage = async () => {
-  const message = userInput.value.trim();
-  if (!message || isLoading.value) return;
-  
+  const message = userInput.value.trim()
+  if (!message || isLoading.value) return
+
   // 添加用户消息
   messages.value.push({
     type: 'user',
-    content: message
-  });
-  userInput.value = '';
-  await scrollToBottom();
-  
+    content: message,
+  })
+  userInput.value = ''
+  await scrollToBottom()
+
   // 开始加载
-  isLoading.value = true;
-  
+  isLoading.value = true
+
   try {
-    let assistantMessage = '';
-    let messageIndex: number | null = null;
-    
+    let assistantMessage = ''
+    let messageIndex: number | null = null
+
     // 获取对话历史记录并限制为10轮
-    const conversationHistory = limitConversationHistory(getConversationHistory());
-    
+    const conversationHistory = limitConversationHistory(getConversationHistory())
+
     // 调用膳食助手API
     await dietChat(message, conversationHistory, (text) => {
       // 当收到第一个响应时，添加助手消息
       if (messageIndex === null) {
-        messageIndex = messages.value.length;
+        messageIndex = messages.value.length 
         messages.value.push({
           type: 'assistant',
-          content: ''
-        });
+          content: '',
+        })
       }
-      
-      assistantMessage += text;
+
+      assistantMessage += text
       if (messageIndex !== null && messages.value[messageIndex]) {
         if (messages.value[messageIndex]) {
-          messages.value[messageIndex]!.content = assistantMessage;
+          messages.value[messageIndex]!.content = assistantMessage
         }
       }
-      scrollToBottom();
-    });
+      scrollToBottom()
+    })
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error)
     messages.value.push({
       type: 'assistant',
-      content: '抱歉，服务暂时不可用，请稍后再试。'
-    });
+      content: '抱歉，服务暂时不可用，请稍后再试。',
+    })
   } finally {
-    isLoading.value = false;
-    await scrollToBottom();
+    isLoading.value = false
+    await scrollToBottom()
   }
-};
+}
 
 onMounted(() => {
-  scrollToBottom();
-});
+  scrollToBottom()
+})
 </script>
 
 <style scoped>
@@ -218,9 +251,7 @@ onMounted(() => {
   margin-bottom: 40px;
   background: white;
   border-radius: 16px;
-  box-shadow:
-    0 8px 32px rgba(76, 175, 80, 0.1),
-    0 4px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 32px rgba(76, 175, 80, 0.1), 0 4px 16px rgba(0, 0, 0, 0.06);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -247,9 +278,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow:
-    0 4px 12px rgba(245, 124, 0, 0.3),
-    0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(245, 124, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .assistant-avatar-small {
@@ -475,43 +504,43 @@ onMounted(() => {
   .diet-assistant-container {
     padding: 0 10px;
   }
-  
+
   .chat-container {
     margin: 10px 0;
     min-height: 85vh;
     max-width: 100%;
   }
-  
+
   .chat-header {
     padding: 16px;
   }
-  
+
   :deep(.el-scrollbar__wrap) {
     padding: 16px;
   }
-  
+
   .chat-input-area {
     padding: 16px;
   }
-  
+
   .message-content {
     max-width: 85%;
   }
-  
+
   .assistant-avatar {
     width: 48px;
     height: 48px;
   }
-  
+
   .avatar-icon {
     width: 28px;
     height: 28px;
   }
-  
+
   .message {
     gap: 12px;
   }
-  
+
   .message-list {
     gap: 16px;
   }

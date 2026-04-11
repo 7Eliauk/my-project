@@ -417,8 +417,8 @@ const viewData = ref<DietRecord>({
   fat: 0,
   carbs: 0,
   fiber: 0,
-  vitamins: '{}',
-  minerals: '{}',
+  vitamins: '',
+  minerals: '',
   remark: '',
   createTime: '',
 })
@@ -441,8 +441,8 @@ const formData = ref<FormData>({
   fat: 0,
   carbs: 0,
   fiber: 0,
-  vitamins: '{}',
-  minerals: '{}',
+  vitamins: '',
+  minerals: '',
   remark: '',
 })
 
@@ -485,8 +485,8 @@ const handleAddRecord = () => {
     fat: 0,
     carbs: 0,
     fiber: 0,
-    vitamins: '{}',
-    minerals: '{}',
+    vitamins: '',
+    minerals: '',
     remark: '',
   }
   dialogVisible.value = true
@@ -797,6 +797,8 @@ onMounted(() => {
   color: #277fff;
   line-height: 1.6;
   margin-top: 10px;
+  /* 让用户鼠标在备注输入框上面依旧能正常看见鼠标 */
+cursor: pointer !important;
 }
 
 /* 列表预览样式 - 食材列表 */
