@@ -168,6 +168,13 @@ const userId = ref(localStorage.getItem('userId') || '1') //默认值为1，实�
 
 //isUserInfoSaved用来标记用户是否已保存过信息
 const isUserInfoSaved = ref(!!localStorage.getItem('isUserInfoSaved'))
+
+// 打印localStorage数据
+console.log('LocalStorage data:', {
+  userId: localStorage.getItem('userId'),
+  isUserInfoSaved: localStorage.getItem('isUserInfoSaved'),
+  token: localStorage.getItem('token'),
+})
 // 个人基础信息
 const userInfo = ref({
   avatar: '',
@@ -197,26 +204,28 @@ const goalInfo = ref({
 onMounted(async () => {
   console.log('页面加载完成进入onMounted')
   console.log('isUserInfoSaved=', isUserInfoSaved.value)
-  if (isUserInfoSaved.value) {
-    try {
-      // 获取个人基础,身体状况信息，目标身体状况信息
-      const [userRes, healthRes, goalRes] = await Promise.all([
-        getUserInfo(userId.value),
-        getUserHealthInfo(userId.value),
-        getUserGoalInfo(userId.value),
-      ])
-      console.log('接口全部成功,goleRes=', userRes)
-      ;(userInfo.value = userRes.data),
-        (healthInfo.value = healthRes.data),
-        (goalInfo.value = goalRes.data)
+  try {
+    // 获取个人基础,身体状况信息，目标身体状况信息
+    const [userRes, healthRes, goalRes] = await Promise.all([
+      getUserInfo(userId.value),
+      getUserHealthInfo(userId.value),
+      getUserGoalInfo(userId.value),
+    ])
+    console.log('接口全部成功, userRes=', userRes)
+    console.log('接口全部成功, healthRes=', healthRes)
+    console.log('接口全部成功, goalRes=', goalRes)
+    userInfo.value = userRes.data
+    healthInfo.value = healthRes.data
+    goalInfo.value = goalRes.data
 
-      console.log('userInfo.value=', userInfo.value)
+    console.log('userInfo.value=', userInfo.value)
+    console.log('healthInfo.value=', healthInfo.value)
+    console.log('goalInfo.value=', goalInfo.value)
 
-      ElMessage.success('个人信息获取成功')
-    } catch (error) {
-      console.error('获取用户信息失败：', error)
-      ElMessage.error('获取用户信息失败，请重试')
-    }
+    ElMessage.success('个人信息获取成功')
+  } catch (error) {
+    console.error('获取用户信息失败：', error)
+    ElMessage.error('获取用户信息失败，请重试')
   }
 })
 
