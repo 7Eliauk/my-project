@@ -79,11 +79,11 @@
         <el-form :model="healthInfo" label-width="120px" :inline="false">
           <el-form-item label="基础疾病">
             <el-select v-model="healthInfo.chronicDiseases" multiple placeholder="请选择基础疾病">
-              <el-option label="糖尿病" value="diabetes" />
-              <el-option label="胃病" value="stomachDisease" />
-              <el-option label="高血压" value="hypertension" />
-              <el-option label="高血脂" value="hyperlipidemia" />
-              <el-option label="其他" value="other" />
+              <el-option label="糖尿病" value="糖尿病" />
+              <el-option label="胃病" value="胃病" />
+              <el-option label="高血压" value="高血压" />
+              <el-option label="高血脂" value="高血脂" />
+              <el-option label="其他" value="其他" />
             </el-select>
           </el-form-item>
 
@@ -168,13 +168,6 @@ const userId = ref(localStorage.getItem('userId') || '1') //默认值为1，实�
 
 //isUserInfoSaved用来标记用户是否已保存过信息
 const isUserInfoSaved = ref(!!localStorage.getItem('isUserInfoSaved'))
-
-// 打印localStorage数据
-console.log('LocalStorage data:', {
-  userId: localStorage.getItem('userId'),
-  isUserInfoSaved: localStorage.getItem('isUserInfoSaved'),
-  token: localStorage.getItem('token'),
-})
 // 个人基础信息
 const userInfo = ref({
   avatar: '',
@@ -204,28 +197,24 @@ const goalInfo = ref({
 onMounted(async () => {
   console.log('页面加载完成进入onMounted')
   console.log('isUserInfoSaved=', isUserInfoSaved.value)
-  try {
-    // 获取个人基础,身体状况信息，目标身体状况信息
-    const [userRes, healthRes, goalRes] = await Promise.all([
-      getUserInfo(userId.value),
-      getUserHealthInfo(userId.value),
-      getUserGoalInfo(userId.value),
-    ])
-    console.log('接口全部成功, userRes=', userRes)
-    console.log('接口全部成功, healthRes=', healthRes)
-    console.log('接口全部成功, goalRes=', goalRes)
-    userInfo.value = userRes.data
-    healthInfo.value = healthRes.data
-    goalInfo.value = goalRes.data
+  if (isUserInfoSaved.value) {
+    try {
+      // 获取个人基础,身体状况信息，目标身体状况信息
+      const [userRes, healthRes, goalRes] = await Promise.all([
+        getUserInfo(userId.value),
+        getUserHealthInfo(userId.value),
+        getUserGoalInfo(userId.value),
+      ])
+      console.log('接口全部成功,goleRes=', userRes)
+      ;(userInfo.value = userRes.data),
+        (healthInfo.value = healthRes.data),
+        (goalInfo.value = goalRes.data)
 
-    console.log('userInfo.value=', userInfo.value)
-    console.log('healthInfo.value=', healthInfo.value)
-    console.log('goalInfo.value=', goalInfo.value)
-
-    ElMessage.success('个人信息获取成功')
-  } catch (error) {
-    console.error('获取用户信息失败：', error)
-    ElMessage.error('获取用户信息失败，请重试')
+      ElMessage.success('个人信息获取成功')
+    } catch (error) {
+      console.error('获取用户信息失败：', error)
+      ElMessage.error('获取用户信息失败，请重试')
+    }
   }
 })
 
@@ -254,7 +243,7 @@ const handleAvatarUpload = async (uploadOptions: any) => {
     // 将userId和file穿给后端
     const res = await uploadAvatarApi(userId.value, file)
     // 使用后端返回的正式URL替换临时URL
-    userInfo.value.avatar = res.data.avatarUrl || tempAvatarUrl // userInfo承接后端返回的头像，如果后端没返回，依旧使用预览的头像URL
+    userInfo.value.avatar = res.data || tempAvatarUrl // userInfo承接后端返回的头像，如果后端没返回，依旧使用预览的头像URL
     // 释放之前的本地地址
     URL.revokeObjectURL(tempAvatarUrl)
     ElMessage.success('头像上传成功')
@@ -296,8 +285,10 @@ const saveHealthInfo = async () => {
     isUserInfoSaved.value = true
     localStorage.setItem('isUserInfoSaved', 'true')
     ElMessage.success('身体状况信息保存成功')
+    console.log('healthInfo.value=', healthInfo.value)
   } catch (error) {
     ElMessage.error('身体状况信息保存失败')
+    console.log('healthInfo.value=', healthInfo.value)
   }
 }
 //保存身体目标信息

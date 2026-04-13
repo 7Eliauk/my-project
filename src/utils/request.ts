@@ -39,7 +39,7 @@ request.interceptors.response.use(
     }
     // 对于 JSON 响应，检查 code 字段
     if (typeof res === 'object' && res.code !== 200) {
-      ElMessage.error(res.msg || '操作失败')
+      ElMessage.error(res.msg || res.message || '操作失败')
       return Promise.reject(res)
     }
     return res
