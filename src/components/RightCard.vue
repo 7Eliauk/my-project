@@ -7,15 +7,28 @@
         <div class="status-indicator"></div>
       </div>
       <div class="nutrition-icon-wrapper">
-        <svg class="nutrition-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor"/>
+        <svg
+          class="nutrition-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
+            fill="currentColor"
+          />
         </svg>
       </div>
       <p class="nutrition-desc">智能分析食材营养成分</p>
       <button class="add-btn-custom" @click="openDialog">
         <span>添加食材</span>
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path
+            d="M12 5v14M5 12h14"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
         </svg>
       </button>
     </div>
@@ -32,9 +45,14 @@
         <div class="plan-content">
           <div class="food-img breakfast-img">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/>
-              <circle cx="12" cy="12" r="3" fill="currentColor"/>
-              <path d="M12 3v3M12 18v3M3 12h3M18 12h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none" />
+              <circle cx="12" cy="12" r="3" fill="currentColor" />
+              <path
+                d="M12 3v3M12 18v3M3 12h3M18 12h3"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
             </svg>
           </div>
           <span>燕麦粥+鸡蛋</span>
@@ -47,8 +65,18 @@
         <div class="plan-content">
           <div class="food-img lunch-img">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2C8.5 2 6 4.5 6 8v4c0 2 1 3 2 4h8c1-1 2-2 2-4V8c0-3.5-2.5-6-6-6z" stroke="currentColor" stroke-width="1.5" fill="none"/>
-              <path d="M8 16v4M12 16v5M16 16v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path
+                d="M12 2C8.5 2 6 4.5 6 8v4c0 2 1 3 2 4h8c1-1 2-2 2-4V8c0-3.5-2.5-6-6-6z"
+                stroke="currentColor"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path
+                d="M8 16v4M12 16v5M16 16v4"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
             </svg>
           </div>
           <span>牛排+水果</span>
@@ -61,8 +89,18 @@
         <div class="plan-content">
           <div class="food-img dinner-img">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2a10 10 0 100 20 10 10 0 000-20z" stroke="currentColor" stroke-width="1.5" fill="none"/>
-              <path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path
+                d="M12 2a10 10 0 100 20 10 10 0 000-20z"
+                stroke="currentColor"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path
+                d="M8 12h8M12 8v8"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
             </svg>
           </div>
           <span>清蒸鱼+蔬菜</span>
@@ -240,6 +278,16 @@
           <div class="nutrition-summary" v-if="analysisResult?.nutrition?.summary">
             <p>{{ analysisResult.nutrition.summary }}</p>
           </div>
+
+          <!-- 保存到日志按钮 -->
+          <div
+            class="result-actions"
+            style="margin-top: 20px; display: flex; justify-content: center"
+          >
+            <el-button type="primary" size="default" @click="saveToLog" :icon="Calendar">
+              保存到饮食日志
+            </el-button>
+          </div>
         </div>
       </div>
       <template #footer>
@@ -256,7 +304,8 @@
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import request from '../utils/request'
-import { Delete } from '@element-plus/icons-vue'
+import { Delete, Calendar } from '@element-plus/icons-vue'
+import { addMealLog } from '../api/mealLog'
 //控制弹窗
 const dialogVisible = ref(false)
 // 定义营养数据类型
@@ -372,6 +421,80 @@ const submitForm = async () => {
     isSubmitting.value = false
   }
 }
+//保存到饮食日志
+const saveToLog = async () => {
+  try {
+    if (!analysisResult.value) {
+      ElMessage.warning('请先进行营养分析')
+      return
+    }
+
+    // 获取登录时的userId
+    let userId: number | null = null
+
+    // 首先尝试从localStorage直接获取userId
+    const storedUserId = localStorage.getItem('userId')
+    if (storedUserId && storedUserId !== 'undefined') {
+      userId = parseInt(storedUserId, 10)
+    }
+
+    // 如果没有直接存储userId，尝试从userInfo中获取
+    if (!userId) {
+      const userStr = localStorage.getItem('userInfo')
+      if (userStr && userStr !== 'undefined') {
+        try {
+          const user = JSON.parse(userStr)
+          userId = user.userId ?? user.id ?? null
+        } catch (error) {
+          console.error('解析用户信息失败:', error)
+          localStorage.removeItem('userInfo')
+        }
+      }
+    }
+
+    if (!userId) {
+      ElMessage.warning('请先登录')
+      return
+    }
+
+    // 提取食材名称
+    const ingredients = formData.value.ingredients.map((item) => item.name).join('、')
+
+    // 从分析结果中提取营养信息
+    const nutrition = analysisResult.value.nutrition
+    const nutritionData = {
+      calories: nutrition.calorie || 0,
+      protein: nutrition.protein || 0,
+      fat: nutrition.fat || 0,
+      carbs: nutrition.carbohydrate || 0,
+      fiber: nutrition.fiber || 0,
+      vitamins: '{}',
+      minerals: '{}',
+    }
+
+    // 创建饮食日志记录
+    const logData = {
+      userId,
+      logDate: new Date().toISOString().split('T')[0] || '',
+      mealTime: '加餐', // 默认餐次
+      foodName: `营养分析: ${ingredients}`,
+      quantity: 100,
+      cookingMethod: formData.value.cookingMethod || '未知',
+      ...nutritionData,
+      remark: analysisResult.value.nutrition.summary || '',
+      createTime: new Date().toISOString(),
+    }
+
+    // 保存到后端
+    await addMealLog(logData)
+
+    ElMessage.success('已保存到饮食日志')
+  } catch (error) {
+    console.error('保存到日志失败:', error)
+    ElMessage.error('保存到日志失败，请重试')
+  }
+}
+
 //重置表单
 const restForm = () => {
   formData.value = {
@@ -394,18 +517,14 @@ const restForm = () => {
   flex-direction: column;
   gap: 16px;
   height: 100%;
-  box-shadow:
-    0 4px 20px rgba(76, 175, 80, 0.1),
-    0 2px 8px rgba(0, 0, 0, 0.05),
+  box-shadow: 0 4px 20px rgba(76, 175, 80, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   transition: all 0.3s ease;
 }
 
 .right-container:hover {
   transform: translateY(-5px);
-  box-shadow:
-    0 12px 30px rgba(76, 175, 80, 0.2),
-    0 4px 12px rgba(0, 0, 0, 0.08),
+  box-shadow: 0 12px 30px rgba(76, 175, 80, 0.2), 0 4px 12px rgba(0, 0, 0, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
@@ -424,9 +543,7 @@ const restForm = () => {
   background: linear-gradient(135deg, #ffffff 0%, #f8fdf8 100%);
   border-radius: 20px;
   border: 1px solid rgba(76, 175, 80, 0.2);
-  box-shadow:
-    0 6px 16px rgba(0, 0, 0, 0.08),
-    0 2px 8px rgba(76, 175, 80, 0.06),
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(76, 175, 80, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
   position: relative;
   overflow: hidden;
@@ -434,9 +551,7 @@ const restForm = () => {
 
 .nutrition-box:hover {
   transform: scale(1.02);
-  box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.12),
-    0 4px 12px rgba(76, 175, 80, 0.1),
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(76, 175, 80, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
@@ -466,8 +581,13 @@ const restForm = () => {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 .nutrition-icon-wrapper {
@@ -479,17 +599,13 @@ const restForm = () => {
   align-items: center;
   justify-content: center;
   margin-bottom: 12px;
-  box-shadow:
-    0 4px 15px rgba(76, 175, 80, 0.2),
-    inset 0 2px 4px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.8);
   transition: all 0.3s ease;
 }
 
 .nutrition-box:hover .nutrition-icon-wrapper {
   transform: scale(1.05);
-  box-shadow:
-    0 6px 20px rgba(76, 175, 80, 0.3),
-    inset 0 2px 4px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.8);
 }
 
 .nutrition-icon {
@@ -517,17 +633,13 @@ const restForm = () => {
   display: flex;
   align-items: center;
   gap: 6px;
-  box-shadow:
-    0 4px 12px rgba(76, 175, 80, 0.3),
-    0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .add-btn-custom:hover {
   background: linear-gradient(135deg, #43a047 0%, #388e3c 100%);
   transform: translateY(-2px);
-  box-shadow:
-    0 6px 16px rgba(76, 175, 80, 0.4),
-    0 3px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4), 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
 .btn-icon {
@@ -543,9 +655,7 @@ const restForm = () => {
   background: linear-gradient(135deg, #ffffff 0%, #f8fdf8 100%);
   border-radius: 20px;
   border: 1px solid rgba(76, 175, 80, 0.2);
-  box-shadow:
-    0 6px 16px rgba(0, 0, 0, 0.08),
-    0 2px 8px rgba(76, 175, 80, 0.06),
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(76, 175, 80, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
