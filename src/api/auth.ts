@@ -23,7 +23,6 @@ export const login = (data: { username?: string; email?: string; password: strin
 export const logout = () => {
   return request.post('/api/auth/logout')
 }
-
 // 发送重置密码验证码
 export const sendResetPwdCode = (email: string) => {
   return request.post('/api/auth/send-reset-pwd-code', { email })
@@ -110,5 +109,12 @@ export function handleAvatarUpload(userId: string, file: any) {
     url: `/api/user-center/avatar/upload`,
     method: 'post',
     data: formData
+  })
+}
+//保存日志
+export function handleSaveRecord(){
+  return request({
+    url: `/api/meal-log/add`,
+    method:'post',
   })
 }
