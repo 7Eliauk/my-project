@@ -24,6 +24,20 @@ export const logout = () => {
   return request.post('/api/auth/logout')
 }
 
+// 发送重置密码验证码
+export const sendResetPwdCode = (email: string) => {
+  return request.post('/api/auth/send-reset-pwd-code', { email })
+}
+
+// 重置密码
+export const resetPassword = (data: {
+  email: string
+  code: string
+  newPassword: string
+}) => {
+  return request.post('/api/auth/reset-password', data)
+}
+
 //食物识别
 export function recognizeDish(file: any) {
   //1、创建Formdata()

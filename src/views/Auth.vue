@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { sendRegisterCode, register, login } from '../api/auth'
+import { sendRegisterCode, register, login, sendResetPwdCode, resetPassword } from '../api/auth'
 
 const router = useRouter()
 const route = useRoute()
@@ -33,6 +33,21 @@ const isSignUpMode = ref(false)
 const containerClass = computed(() => {
   return isSignUpMode.value ? 'container sign-up-mode' : 'container'
 })
+
+// 忘记密码相关
+const forgotPasswordDialogVisible = ref(false)
+const resetEmail = ref('')
+const resetCode = ref('')
+const resetNewPassword = ref('')
+const resetConfirmPassword = ref('')
+const resetEmailError = ref('')
+const resetCodeError = ref('')
+const resetPasswordError = ref('')
+const resetCountDown = ref(0)
+const resetCodeBtnDisabled = ref(false)
+const resetCodeBtnText = ref('获取验证码')
+const isResetLoading = ref(false)
+const resetStep = ref(1) // 1: 输入邮箱, 2: 输入验证码和新密码
 
 // 组件挂载时根据路由设置模式
 onMounted(() => {
@@ -161,9 +176,17 @@ const handleRegister = async () => {
 
 // 验证密码是否匹配，在离开输入框时调用
 const validatePasswordMatch = () => {
-  if (registerPassword.value && confirmPassword.value && registerPassword.value !== confirmPassword.value) {
+  if (
+    registerPassword.value &&
+    confirmPassword.value &&
+    registerPassword.value !== confirmPassword.value
+  ) {
     registerErrorMessage.value = '两次输入的密码不一致'
-  } else if (registerPassword.value && confirmPassword.value && registerPassword.value === confirmPassword.value) {
+  } else if (
+    registerPassword.value &&
+    confirmPassword.value &&
+    registerPassword.value === confirmPassword.value
+  ) {
     registerErrorMessage.value = ''
   }
 }
@@ -214,6 +237,120 @@ const handleLogin = async () => {
     isLoginLoading.value = false
   }
 }
+
+// 打开忘记密码弹框
+const openForgotPasswordDialog = () => {
+  forgotPasswordDialogVisible.value = true
+  resetStep.value = 1
+  resetEmail.value = ''
+  resetCode.value = ''
+  resetNewPassword.value = ''
+  resetConfirmPassword.value = ''
+  resetEmailError.value = ''
+  resetCodeError.value = ''
+  resetPasswordError.value = ''
+}
+
+// 验证重置密码邮箱格式
+const validateResetEmail = () => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (resetEmail.value && !emailRegex.test(resetEmail.value)) {
+    resetEmailError.value = '请输入有效的邮箱地址'
+    return false
+  } else {
+    resetEmailError.value = ''
+    return true
+  }
+}
+
+// 发送重置密码验证码
+const sendResetCode = async () => {
+  if (!validateResetEmail() || !resetEmail.value) {
+    resetEmailError.value = '请输入有效的邮箱地址'
+    return
+  }
+
+  try {
+    isResetLoading.value = true
+    await sendResetPwdCode(resetEmail.value)
+    ElMessage.success('验证码发送成功，请注意查收')
+
+    resetCountDown.value = 60
+    resetCodeBtnDisabled.value = true
+    resetCodeBtnText.value = `${resetCountDown.value}秒后重新获取`
+    const timer = setInterval(() => {
+      resetCountDown.value--
+      resetCodeBtnText.value = `${resetCountDown.value}秒后重新获取`
+
+      if (resetCountDown.value <= 0) {
+        clearInterval(timer)
+        resetCodeBtnDisabled.value = false
+        resetCodeBtnText.value = '获取验证码'
+      }
+    }, 1000)
+  } catch (error: any) {
+    console.error(error)
+    resetEmailError.value = error.msg || '验证码发送失败，请稍后重试'
+  } finally {
+    isResetLoading.value = false
+  }
+}
+
+// 验证重置密码验证码格式
+const validateResetCode = () => {
+  if (resetCode.value && resetCode.value.length !== 6) {
+    resetCodeError.value = '验证码必须为6位数字'
+    return false
+  } else {
+    resetCodeError.value = ''
+    return true
+  }
+}
+
+// 重置密码
+const handleResetPassword = async () => {
+  if (!resetEmail.value) {
+    resetEmailError.value = '请输入邮箱地址'
+    return
+  }
+
+  if (!resetCode.value || resetCode.value.length !== 6) {
+    resetCodeError.value = '请输入6位验证码'
+    return
+  }
+
+  if (!resetNewPassword.value) {
+    resetPasswordError.value = '请输入新密码'
+    return
+  }
+
+  if (resetNewPassword.value !== resetConfirmPassword.value) {
+    resetPasswordError.value = '两次输入的密码不一致'
+    return
+  }
+
+  try {
+    isResetLoading.value = true
+    await resetPassword({
+      email: resetEmail.value,
+      code: resetCode.value,
+      newPassword: resetNewPassword.value,
+    })
+
+    ElMessage.success('密码重置成功，请登录')
+    forgotPasswordDialogVisible.value = false
+
+    // 重置表单
+    resetEmail.value = ''
+    resetCode.value = ''
+    resetNewPassword.value = ''
+    resetConfirmPassword.value = ''
+  } catch (error: any) {
+    resetPasswordError.value = error.msg || '密码重置失败，请稍后重试'
+  } finally {
+    isResetLoading.value = false
+  }
+}
 </script>
 
 <template>
@@ -229,8 +366,9 @@ const handleLogin = async () => {
         <div class="submit-btn" :class="{ disabled: isLoginLoading }" @click="handleLogin">
           {{ isLoginLoading ? '登录中...' : '立即登录' }}
         </div>
+        <div class="forgot-password-link" @click="openForgotPasswordDialog">忘记密码？</div>
       </form>
-      
+
       <!-- 注册表单 -->
       <form class="sign-up-form" @submit.prevent="handleRegister">
         <h1 class="brand-title">智膳坊</h1>
@@ -244,15 +382,10 @@ const handleLogin = async () => {
         </div>
         <div class="input-with-error">
           <div class="code-input-wrapper">
-            <input 
-              type="text" 
-              v-model="registerCode" 
-              placeholder="验证码" 
-              @blur="validateCode" 
-            />
-            <span 
-              class="code-link" 
-              @click="sendCode" 
+            <input type="text" v-model="registerCode" placeholder="验证码" @blur="validateCode" />
+            <span
+              class="code-link"
+              @click="sendCode"
               :class="{ disabled: codeBtnDisabled || isLoading }"
             >
               {{ isLoading ? '发送中...' : codeBtnText }}
@@ -261,10 +394,20 @@ const handleLogin = async () => {
           <span v-if="codeError" class="field-error-right">{{ codeError }}</span>
         </div>
         <div class="input-with-error">
-          <input type="password" v-model="registerPassword" placeholder="密码" @blur="validatePasswordMatch" />
+          <input
+            type="password"
+            v-model="registerPassword"
+            placeholder="密码"
+            @blur="validatePasswordMatch"
+          />
         </div>
         <div class="input-with-error">
-          <input type="password" v-model="confirmPassword" placeholder="确认密码" @blur="validatePasswordMatch" />
+          <input
+            type="password"
+            v-model="confirmPassword"
+            placeholder="确认密码"
+            @blur="validatePasswordMatch"
+          />
         </div>
         <p v-if="registerErrorMessage" class="error-message">{{ registerErrorMessage }}</p>
         <div class="submit-btn" :class="{ disabled: isRegistering }" @click="handleRegister">
@@ -272,7 +415,7 @@ const handleLogin = async () => {
         </div>
       </form>
     </div>
-    
+
     <div class="desc-warp">
       <div class="desc-warp-item sign-up-desc">
         <div class="content">
@@ -287,6 +430,80 @@ const handleLogin = async () => {
         <img src="../assets/register.svg" alt="" />
       </div>
     </div>
+
+    <!-- 忘记密码弹框 -->
+    <el-dialog
+      v-model="forgotPasswordDialogVisible"
+      title="重置密码"
+      width="480px"
+      :close-on-click-modal="false"
+    >
+      <div class="reset-password-form">
+        <el-form label-width="80px" label-position="left">
+          <el-form-item label="邮箱" class="form-item-spacing">
+            <el-input
+              v-model="resetEmail"
+              placeholder="请输入注册邮箱"
+              @blur="validateResetEmail"
+              clearable
+            />
+            <span v-if="resetEmailError" class="error-text">{{ resetEmailError }}</span>
+          </el-form-item>
+
+          <el-form-item label="验证码" class="form-item-spacing">
+            <div class="code-input-group">
+              <el-input
+                v-model="resetCode"
+                placeholder="请输入6位验证码"
+                maxlength="6"
+                @blur="validateResetCode"
+                clearable
+              />
+              <el-button
+                type="primary"
+                :disabled="resetCodeBtnDisabled || isResetLoading"
+                @click="sendResetCode"
+                style="width: 120px"
+              >
+                {{ isResetLoading ? '发送中...' : resetCodeBtnText }}
+              </el-button>
+            </div>
+            <span v-if="resetCodeError" class="error-text">{{ resetCodeError }}</span>
+          </el-form-item>
+
+          <el-form-item label="新密码" class="form-item-spacing">
+            <el-input
+              v-model="resetNewPassword"
+              type="password"
+              placeholder="请输入新密码"
+              show-password
+              clearable
+            />
+          </el-form-item>
+
+          <el-form-item label="确认密码" class="form-item-spacing">
+            <el-input
+              v-model="resetConfirmPassword"
+              type="password"
+              placeholder="请再次输入新密码"
+              show-password
+              clearable
+            />
+          </el-form-item>
+        </el-form>
+
+        <p v-if="resetPasswordError" class="error-message">{{ resetPasswordError }}</p>
+      </div>
+
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="forgotPasswordDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="handleResetPassword" :loading="isResetLoading">
+            确认重置
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -306,7 +523,7 @@ const handleLogin = async () => {
 }
 
 .container::before {
-  content: " ";
+  content: ' ';
   position: absolute;
   width: 2000px;
   height: 2000px;
@@ -332,7 +549,7 @@ const handleLogin = async () => {
   transform: translate(-50%, -50%);
   display: grid;
   grid-template-columns: 1fr;
-  transition: 1s 0.7s ease-in-out; 
+  transition: 1s 0.7s ease-in-out;
 }
 
 .form-warp form {
@@ -359,10 +576,7 @@ const handleLogin = async () => {
   font-weight: bold;
   color: #ff7043;
   margin-bottom: 10px;
-  text-shadow: 
-    1px 1px 0px #ffffff,
-    2px 2px 0px #ff9800,
-    3px 3px 0px #f57c00,
+  text-shadow: 1px 1px 0px #ffffff, 2px 2px 0px #ff9800, 3px 3px 0px #f57c00,
     4px 4px 10px rgba(0, 0, 0, 0.3);
   letter-spacing: 4px;
   transform: skew(-5deg);
@@ -409,7 +623,7 @@ input::placeholder {
 
 .submit-btn {
   background-color: #ff7043;
-  color: #FFF;
+  color: #fff;
   text-align: center;
   min-width: 150px;
   font-size: initial;
@@ -461,7 +675,7 @@ input::placeholder {
 .content {
   width: 100%;
   transition: transform 0.9s ease-in-out;
-  transition-delay: .6s;
+  transition-delay: 0.6s;
 }
 
 .sign-in-desc img,
@@ -485,22 +699,22 @@ button {
   min-width: 100px;
   text-align: center;
   border-radius: 30px;
-  border: 2px solid #FFF;
+  border: 2px solid #fff;
   background: none;
-  color: #FFF;
+  color: #fff;
   cursor: pointer;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 
 button:active {
-  background: rgba(255, 255, 255, .1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 img {
   width: 100%;
   display: block;
   transition: transform 0.9s ease-in-out;
-  transition-delay: .5s;
+  transition-delay: 0.5s;
 }
 
 /* 验证码相关样式 */
@@ -633,5 +847,92 @@ img {
   img {
     display: none;
   }
+}
+
+/* 忘记密码链接样式 */
+.forgot-password-link {
+  margin-top: 15px;
+  text-align: center;
+  color: #ff7043;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.3s;
+  min-width: 300px;
+}
+
+.forgot-password-link:hover {
+  color: #ffca28;
+  text-decoration: underline;
+}
+
+/* 重置密码弹框样式 */
+.reset-password-form {
+  padding: 20px 30px 10px;
+}
+
+.reset-password-form .el-form {
+  margin-top: 10px;
+}
+
+.form-item-spacing {
+  margin-bottom: 24px;
+}
+
+.form-item-spacing:last-child {
+  margin-bottom: 16px;
+}
+
+.code-input-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.code-input-group .el-input {
+  flex: 1;
+}
+
+.error-text {
+  color: #f54444;
+  font-size: 12px;
+  margin-top: 6px;
+  display: block;
+  line-height: 1.4;
+}
+
+.reset-password-form .error-message {
+  margin-top: 10px;
+  margin-bottom: 0;
+  padding: 8px 12px;
+  background-color: #fff3f3;
+  border-radius: 6px;
+  border-left: 3px solid #f54444;
+}
+
+/* 弹框底部按钮样式 */
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 0 10px;
+}
+
+.dialog-footer .el-button {
+  min-width: 90px;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* 确保弹框footer始终可见 */
+:deep(.el-dialog__footer) {
+  opacity: 1 !important;
+  visibility: visible !important;
+  padding: 15px 20px !important;
+  border-top: 1px solid #e8e8e8;
+}
+
+:deep(.el-dialog__footer .el-button) {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 </style>
